@@ -1,0 +1,244 @@
+type: "SNIPPET_NOTE"
+folder: "c464453ed9e010b85819"
+title: ""
+description: ""
+snippets: [
+  {
+    name: "reporte de wip.vb"
+    mode: "VB.NET"
+    content: '''
+      Sub organize_elements()
+      
+          Application.DisplayAlerts = False
+          
+          Dim ws As Worksheet
+          
+          For Each ws In ActiveWorkbook.Worksheets
+              If Right(ActiveSheet.Name, 4) = "test" Then ws.Delete
+          Next ws
+      
+          Application.DisplayAlerts = True
+          Sheets("Sheet1").Select
+          lastRow = Sheets("Sheet1").Cells(Sheets("Sheet1").Rows.Count, "A").End(xlUp).Row
+          
+          osas = Array("OSAS", _
+              Array("5067-5071", "LR4GEN2OSA", "LR4OSAF1"), _
+              Array("LR_INSPC", "LR_OSA_WB", "LR_PURGE", "POST_PURGE", "PRE_PURGE"))
+          shim = Array("SHIM", _
+              Array("5067-5111", "5067-5149", "5067-5150", "FITG2ROSASHIM", "LR4TSHIMF1"), _
+              Array("R_ALPSLENS", "R_SHIMASSY", "R_FINALINS", "T_SHIM_TC", "T_SI_LENS", "T_SI_REMEA", "T_ALPSLENS", "T_WB_INSP"))
+          pkg = Array("PKG", _
+              Array("RPIC-10410-A4", "RPIC-10410-CM1", "RPIC-10410-D4", "TPIC-10410-A4", "TPIC-10410-CM1", "TPIC-10410-D4", "TPIC-10410-D4DR", "TPIC-10410-D4LT", "TPIC-10410-F1"), _
+              Array("LR_R_ASSY", "LR_T_ASSY", "LR_T_WB", "LR_R_WB", "LR_TSCREEN", "LR_R_SCREE", "LR_TEMPC", "LR_R_TAPA", "LR_T_TAPA", "LR_R_WELD", "LR_T_WELD", "LR_POSTTC", "LR_TRIM", "LR_FLEX", "LR_MTLI", "LR_T_FUNC", "LR_R_FUNC", "LR_SPACER", "LR_PACK"))
+          
+          Areas = Array(osas, shim, pkg)
+          
+          For x = LBound(Areas) To UBound(Areas)
+              Dim sheetName As String
+              Dim areaLastRow As Integer
+              Dim PivoteRange As String
+              
+              sheetName = Areas(x)(0) & "_test"
+              Sheets.Add
+              ActiveSheet.Name = sheetName
+              
+              Sheets("Sheet1").Select
+              Range("A1").Select
+              Selection.AutoFilter
+              ActiveSheet.Range("$A$1:$N$" & lastRow).AutoFilter Field:=1, Criteria1:=Areas(x)(1), Operator:=xlFilterValues
+                  
+              ActiveSheet.AutoFilter.Range.Copy
+              Sheets(sheetName).Paste
+              
+              Selection.AutoFilter
+              Sheets(sheetName).Select
+              
+              areaLastRow = Sheets(sheetName).Cells(Sheets(sheetName).Rows.Count, "A").End(xlUp).Row
+              For Row = 2 To areaLastRow
+                  operation_name = Sheets(sheetName).Range("C" & Row).Value
+                  Sheets(sheetName).Range("O1").Value = "O CURRENT OPN"
+                  
+                  For operation = LBound(Areas(x)(2)) To UBound(Areas(x)(2))
+                      If (Areas(x)(2)(operation) = operation_name) Then
+                          Sheets(sheetName).Range("O" & Row).Value = Format(operation, "#00") & "_" & operation_name
+                          Exit For
+                      End If
+                  Next 'Ordered operation column creation
+                  
+              Next ' Operation handling
+          
+              Set StartPoint = ActiveSheet.Range("A1")
+              Set DataRange = ActiveSheet.Range("A1", "O" & areaLastRow)
+              PivoteRange = "'" & ActiveSheet.Name & "'!" & DataRange.Address(ReferenceStyle:=xlR1C1)
+              
+              ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+                  PivoteRange, Version:=xlPivotTableVersion10).CreatePivotTable _
+                  TableDestination:=sheetName & "!R2C17", TableName:="PivotTable1", _
+                  DefaultVersion:=xlPivotTableVersion10
+              
+              Cells(2, 17).Select
+              ActiveWorkbook.ShowPivotTableFieldList = True
+              With ActiveSheet.PivotTables("PivotTable1").PivotFields("JOB STAT")
+                  .Orientation = xlPageField
+                  .Position = 1
+              End With
+              With ActiveSheet.PivotTables("PivotTable1").PivotFields("ITEM NO")
+                  .Orientation = xlColumnField
+                  .Position = 1
+              End With
+              With ActiveSheet.PivotTables("PivotTable1").PivotFields("O CURRENT OPN")
+                  .Orientation = xlRowField
+                  .Position = 1
+              End With
+              ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+                  "PivotTable1").PivotFields("JOB QTY"), "Sum of JOB QTY", xlSum
+              ActiveWorkbook.ShowPivotTableFieldList = False
+              
+          Next ' Areas
+          Sheets("Sheet1").Select
+      End Sub
+      
+    '''
+  }
+  {
+    name: "reporte de wip 2.vb"
+    mode: "VB.NET"
+    content: '''
+      Sub organize_elements()
+      
+          'Application.SendKeys "^g ^a {DEL}"
+          Application.DisplayAlerts = False
+          
+          Dim ws As Worksheet
+          
+          For Each ws In ActiveWorkbook.Worksheets
+              If ActiveWorkbook.Worksheets.Count = 1 Then
+                  If ActiveSheet.UsedRange.Rows.Count = 1 And ActiveSheet.UsedRange.Columns.Count = 1 And Cells(1, 1).Value = "" Then
+                      ActiveSheet.Name = "Downloaded"
+                  Else
+                      Sheets.Add
+                      ActiveSheet.Name = "Downloaded"
+                      ws.Delete
+                  End If
+              Else
+                  If Right(ws.Name, 9) = "generated" Or ws.Name = "Downloaded" Or Left(ws.Name, 5) = "Sheet" Then ws.Delete
+              End If
+          Next ws
+      
+          Call download_wip_from_internet
+          Application.DisplayAlerts = True
+          Sheets("Downloaded").Select
+          lastRow = Sheets("Downloaded").Cells(Sheets("Downloaded").Rows.Count, "A").End(xlUp).Row
+          
+          osas = Array("OSAS", _
+              Array("5067-5071", "LR4GEN2OSA", "LR4OSAF1"), _
+              Array("LR_INSPC", "LR_OSA_WB", "LR_PURGE", "POST_PURGE", "PRE_PURGE"))
+          shim = Array("SHIM", _
+              Array("5067-5111", "5067-5149", "5067-5150", "FITG2ROSASHIM", "LR4TSHIMF1"), _
+              Array("R_ALPSLENS", "R_SHIMASSY", "R_FINALINS", "T_SHIMASSY", "T_SHIM_TC", "T_SI_LENS", "T_SI_REMEA", "T_ALPSLENS", "T_WB_INSP"))
+          pkg = Array("PKG", _
+              Array("RPIC-10410-A4", "RPIC-10410-CM1", "RPIC-10410-D4", "TPIC-10410-A4", "TPIC-10410-CM1", "TPIC-10410-D4", "TPIC-10410-D4DR", "TPIC-10410-D4LT", "TPIC-10410-F1"), _
+              Array("LR_R_ASSY", "LR_T_ASSY", "LR_T_WB", "LR_R_WB", "LR_TSCREEN", "LR_R_SCREE", "LR_TEMPC", "LR_R_TAPA", "LR_T_TAPA", "LR_R_WELD", "LR_T_WELD", "LR_POSTTC", "LR_TRIM", "LR_FLEX", "LR_MTLI", "LR_T_FUNC", "LR_R_FUNC", "LR_SPACER", "LR_PACK"))
+          
+          Areas = Array(osas, shim, pkg)
+          
+          For x = LBound(Areas) To UBound(Areas)
+              Dim sheetName As String
+              Dim areaLastRow As Integer
+              Dim PivoteRange As String
+              
+              sheetName = Areas(x)(0) & "generated"
+              Sheets.Add
+              ActiveSheet.Name = sheetName
+              
+              Sheets("Downloaded").Select
+              Range("A1").Select
+              Selection.AutoFilter
+              ActiveSheet.Range("$A$1:$N$" & lastRow).AutoFilter Field:=4, Criteria1:=Areas(x)(1), Operator:=xlFilterValues
+                  
+              ActiveSheet.AutoFilter.Range.Copy
+              Sheets(sheetName).Paste
+              
+              Selection.AutoFilter
+              Sheets(sheetName).Select
+              
+              areaLastRow = Sheets(sheetName).Cells(Sheets(sheetName).Rows.Count, "A").End(xlUp).Row
+              For Row = 2 To areaLastRow
+                  operation_name = Sheets(sheetName).Range("B" & Row).Value
+                  Sheets(sheetName).Range("J1").Value = "O CURRENT OPN"
+                  
+                  For operation = LBound(Areas(x)(2)) To UBound(Areas(x)(2))
+                      If (Areas(x)(2)(operation) = operation_name) Then
+                          Sheets(sheetName).Range("J" & Row).Value = Format(operation, "#00") & "_" & operation_name
+                          Exit For
+                      End If
+                  Next 'Ordered operation column creation
+                  
+              Next ' Operation handling
+              
+              Cells.EntireColumn.AutoFit
+              Set StartPoint = ActiveSheet.Range("A1")
+              Set DataRange = ActiveSheet.Range("A1", "J" & areaLastRow)
+              PivoteRange = "'" & ActiveSheet.Name & "'!" & DataRange.Address(ReferenceStyle:=xlR1C1)
+              Debug.Print PivoteRange
+              
+              ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+                  PivoteRange, Version:=xlPivotTableVersion10).CreatePivotTable _
+                  TableDestination:=sheetName & "!R2C17", TableName:="PivotTable1", _
+                  DefaultVersion:=xlPivotTableVersion10
+              
+              Cells(2, 17).Select
+              ActiveWorkbook.ShowPivotTableFieldList = True
+              With ActiveSheet.PivotTables("PivotTable1").PivotFields("jobstatus")
+                  .Orientation = xlPageField
+                  .Position = 1
+              End With
+              With ActiveSheet.PivotTables("PivotTable1").PivotFields("CODIGO")
+                  .Orientation = xlColumnField
+                  .Position = 1
+              End With
+              With ActiveSheet.PivotTables("PivotTable1").PivotFields("O CURRENT OPN")
+                  .Orientation = xlRowField
+                  .Position = 1
+              End With
+              ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+                  "PivotTable1").PivotFields("QTY"), "Sum of JOB QTY", xlSum
+              ActiveWorkbook.ShowPivotTableFieldList = False
+              
+          Next ' Areas
+          Sheets("Downloaded").Select
+      End Sub
+      
+      Private Sub download_wip_from_internet()
+         
+          Dim URL As String
+          Dim destCell As Range
+          
+          URL = "http://wmatvmlr401/lr4/dataFeeder/oldwip.php/getcsv/lr4/all/all"
+          
+          Debug.Print URL
+          
+          Set destCell = Worksheets("Downloaded").Range("A1")
+          destCell.Select
+          
+          With destCell.Parent.QueryTables.Add(Connection:="TEXT;" & URL, Destination:=destCell)
+              .TextFileStartRow = 1
+              .TextFileParseType = xlDelimited
+              .TextFileCommaDelimiter = True
+              .Refresh BackgroundQuery:=False
+          End With
+          
+          destCell.Parent.QueryTables(1).Delete
+      
+      End Sub
+      
+    '''
+  }
+]
+tags: [
+  "emmanuel"
+  "reporte_de_wip"
+]
+isStarred: false
+createdAt: "2017-04-04T14:52:42.677Z"
+updatedAt: "2017-04-04T23:14:48.361Z"

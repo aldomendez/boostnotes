@@ -1,0 +1,73 @@
+type: "MARKDOWN_NOTE"
+folder: "c464453ed9e010b85819"
+title: "Aplicacion de control de mantenimientos a equipos"
+content: '''
+  # Aplicacion de control de mantenimientos a equipos
+  
+  La aplicacion debe de contar con una lista de equipos que es la base principal de trabajo, en esta se tiene que poner que es lo que se le ha estado haciendo al equipo, y tiene que ser rastreable. Por ejemplo reinicios y calibraciones 
+  
+  Los datos que actualmente nos esta requiriendo ingenieria son:
+  
+  * __Nombre del equipo__ _Actualmente se abre un archivo con el nombre del equipo, pero la idea es identificar cual es la maquina con la que se esta trabajando_ {periodicidad:diario}
+  * __camaras__ `{x:number +- 2um;y:number +- 2um; z:number +- 2um; periodicidad: diario}`[revisar calplate este limpio. usar cotonete azul seco y limpiar calplate]
+  * __End effector__ `{colocada: boolean}` [Si la respuesta es no, colocar correctamente el end-effector y realizar las calibraciones de herramientas `{caso NO: obligatorio calibrar herramientas}`]
+  * __lens tool__ `{status: boolean}`
+  * __COR__ `{x:number +- 1um;y:number +- 1um; periodicidad: diario}`
+  * __Rubber tool__ [Revisar goma/ Deteccion de vacio al colocar pieza en BS], [revisar imagen correcta y referencia este en el centro de la herramienta] {periodicidad: diario}
+  * __gripper__
+    * __interna__ {min:0.79mm; max:0.85mm; periodicidad: diario}
+    * __externa__ {max:1.31mm; periodicidad: diario} [revisar medidas de las gripper interno y externo]
+    * __imagen/ down__ [Referencia con respecto al centro] [revisar que la griper lado izquiero sea rectangular/ lado derecho tenga chaflan] [realizar prueba de imagen(?: no se como seria)]
+    * __imagen/ side__ [Referencia con respecto al centro]
+    * __presion del gripper__ {presion:5psi; periodicidad: diario}
+  * __bondstation__ [tiene que estar limpio / sin contaminacion]
+    * __presion__ {presion: 2psi; periodicidad: semanal}
+    * __centro__ [referencia debe de estar al centro / revisar con GRID] {periodicidad: semanal}
+    * __autofocus__ {periodicidad: diario}
+  * __lapstation__ [campana de reflexion tiene que estar centrada en 0] {periodicidad: diario} [Reviar el punto de referencia GDB(?: como)]
+  * __pines de epoxy__ {periodicidad: diario}[revisar imagen correcta y referencia en el centro ];[calbiar si tiene exceso de epoxy];[revisar las bandas del slide];[pulir la herramienta]
+  * __UV__ [limpar "lente" con cotonete aqua y alcohol];[calibracion de referencias automaticas]
+    * __potencia__ {lamda: 6.32 +- .2; periodicidad: semanal; nivel del onmicure: varia} [anotar nivel del omnicure]
+  * __detector__ {x: 0 +-0.5; y: 2.3 +- 0.5; z:0 +- 0.5; periodicidad: diario} [revisar la referencia del detector]
+  * __counter valance__ {periodicidad: semanal} [revisar subida y bajada del piston de Z]; [revisar fuga y colocacion correcta]
+  * __puntas de prueba__ [revision visual, durante produccion]
+  * __limpieza_ {periodicidad: semanal}
+    * __eje Y__
+    * __eje Z__
+    * __eje X__
+  * __mangueras de aire y vacio__ {periodicidad: semanal}
+  * __disco duro__ {periodicidad: trimestral}
+  * __limpieza de hardware__ {periodicidad: trimestral}
+  * __limpieza de la base__ {periodicidad: trimestral}
+  * __limpieza de amplificadores__ {periodicidad: trimestral}
+  
+  ## Mantenimientos de amplificadores por ingenieria
+  
+  * Calibracion de amplificadores
+    * __amp x__ {periodicidad: trimestral; completado: boolean}
+    * __amp y__ {periodicidad: trimestral; completado: boolean}
+    * __amp y'__ {periodicidad: trimestral; completado: boolean}
+    * __amp z__ {periodicidad: trimestral; completado: boolean}
+    * __amp t__ {periodicidad: trimestral; completado: boolean}
+  
+  * Calibracion de pre-amplificadores
+    * __amp x__ {periodicidad: trimestral; completado: boolean}
+    * __amp y__ {periodicidad: trimestral; completado: boolean}
+    * __amp y'__ {periodicidad: trimestral; completado: boolean}
+    * __amp z__ {periodicidad: trimestral; completado: boolean}
+    * __amp t__ {periodicidad: trimestral; completado: boolean}
+  
+  * balanceo de fases de motor
+    * __motor x__ {periodicidad: trimestral; completado: boolean}
+    * __motor y__ {periodicidad: trimestral; completado: boolean}
+    * __motor y'__ {periodicidad: trimestral; completado: boolean}
+    * __motor z__ {periodicidad: trimestral; completado: boolean}
+    * __motor t__ {periodicidad: trimestral; completado: boolean}
+'''
+tags: [
+  "idea"
+  "aplicacion"
+]
+isStarred: false
+createdAt: "2017-04-03T18:36:35.614Z"
+updatedAt: "2017-04-03T19:42:07.838Z"
