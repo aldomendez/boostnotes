@@ -1,0 +1,16 @@
+type: "MARKDOWN_NOTE"
+folder: "144e797422e10f7400c6"
+title: "Css Debugger"
+content: '''
+  Css Debugger
+  
+  Pone un borde de color aleatorio y muy fino al rededor de todos los elementos de la pagina
+  
+  ```js
+  [].forEach.call(document.querySelectorAll("*"),function(a){a.style.outline="1px solid #"+(~~(Math.random()*(1<<24))).toString(16)}) 
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-08T21:52:41.367Z"
+updatedAt: "2017-04-24T10:35:50.077Z"

@@ -1,0 +1,131 @@
+type: "MARKDOWN_NOTE"
+folder: "d4e9110bb3333776e8c9"
+title: "Ejemplo de formato de proyecto"
+content: '''
+  # Ejemplo de formato de proyecto
+  
+  Siguiendo la estructura de un proyecto, se podra hacer uso de cualquier proyecto de los que he llevado, debido a que hago uso de las mismas practicas y formas de trabajo, asi que tomando como ejemplo un proyecto aleatorio, se podra hacer uso de todos los proyectos alojados en `\\\\wmatvmoee01\\git`
+  
+  ## Herramientas requeridas:
+  
+  * __Git__ Control de revisiones distribuido [instaldor](\\\\wmatvmoee01\\shared\\Git-2.10.0-64-bit.exe)
+  * __Visual Studio Code__ Editor de codigo libre y de codigo abierto
+  * __Node__ JavaScript runtime [nodejs](https://nodejs.org/en/)
+  * __Mithril__ Framework para SPA's (Single Page Applications) [web page](https://mithril.js.org/). La herramienta se instala _automaticamente_ como parte de las dependencias del proyecto, lo que hace falta es el conocimiento de como funciona y para eso es la pagina.
+  
+  ## Instrucciones
+  
+  Comenzaremos con clonar un proyecto, supongamos que queremos trabajar con el codigo alojado en `\\\\wmatvmoee01\\git\\control-bonder-data-feeder.git`, este en particular es _un control de fallas que lee datos de phase2_
+  
+  1. Suponiendo que ya tienen instaladas las herramientas mencionadas
+  1. Usando una linea de comandos en la que se pueda ejecutar Git. Ejecutar lo siguiente:
+  2. `git clone file:////wmatvmoee01/git/control-bonder-data-feeder.git`
+  3. Noten que se agrega `file://` al inicio de la direccion y se invierten las diagonales `\\` => `/`
+  2.  Esto generara una carpeta llamada `control-bonder-data-feeder` el nombre se puede cambiar si es deseable
+  3. Se entra a esta carpeta y vemos que entre otras cosas tiene un archivo llamado `package.json` esto es indicativo de que el proyecto utiliza __Node__ asi que nos movemos a este directorio en la linea de comandos y ejecutamos
+  4. `npm install`
+  5. Con esto se descargaran las dependencias del proyecto (dentro del archivo `package.json` en la seccion de dependencias se enlistan las dependencias del proyecto)
+  6. Abrir la carpeta del proyecto en _Visual Studio Code_
+  7. Se vera una estructura de directorio muy similar a lo siguiente:
+  
+  ```
+  -- bin
+    └- app.js
+  -- sql
+    └- *.sql
+  -- src
+    └- models
+      └- *.js
+      └- FailModes.js
+    └- views
+      └-*.js
+    └-index.js
+  -- index.html
+  -- index.php
+  -- packag.json
+  -- style.css
+  ```
+  10. La estructura del proyecto es _sencilla_:
+    1. _bin_ tiene los ejecutables de la aplicacion
+    2. _sql_ tiene los querys
+    3. _src_ tiene los modelos y vistas (en JavaScript)
+      4. `models/FailModes.js` Contiene los modos de falla. Solo hay que notar que los modos de falla tienen que estar en mayusculas, y no se deberian de repetir y la descripcion no debe de tener el caracter `:` por que internamente se utiliza para delimitar, y puede ocasionar comportamientos herráticos.
+      5. Otra cosa que hay que notar es que si se cambia la direccion del proyecto se tiene que modificar el archivo `models/LostTime.js` y actualizar la `url` apropiadamente
+    6. _views_ Contiene las vistas de la aplicacion. Todo en el formato de Mithril
+    7. _src/index.js_ es el padre de toda la aplicacion. aqui estan las rutas que obedecen a la aplicacion. Y las dependencias iniciales.
+    8. _index.html_ Es lo que mandan a llamar los usuarios de la aplicacion y es el que hace el _bootstraping_ con lo que se genera la aplicacion. manda a llamar los estilos visuales y carga el ejecutable de la aplicacion (_bin/app.js_)
+    9. _index.php_ Cuando carga la aplicacion en el navegador este hara llamadas a aqui para pedir los datos que necesita la aplicacion para funcionar. La unica responsabilidad de este script es proporcionar datos y mandar correos.
+  
+  > Cada vez que se realize un cambio en una carpeta de codigo se tiene que ejecutar lo siguiente para guardar los cambios en los repositorios:
+  > `git add .` para mover los archivos que sufrieron cambios a un lugar que se llama _stagging area_
+  > `git commit` Para hacer los cambios partes del control de versiones. Con este comando se abre una ventana de __VIM__ (`i` para que pasen a modo _input_ y puedan escribir. `esc` para indicar que ya terminaron y `ZZ` para guardar cambios - la `Z` es mayúscula)
+   
+  11. Al terminar de hacer los cambios, hay varias cosas que se pueden hacer la lista de comandos esta en el archivo `package.json` en el apartado `scripts`. Para este proyecto la lista contiene lo siguiente:
+    12. `test` El proyecto no cuenta con pruebas
+    13. `start` inicia el modo _watch_ contra `src/index/js`. Asi que cada vez que cambie este archivo o alguna de sus dependencias, se escribirá de nuevo el archivo `bin/app.js` haciendo efectivo todos los cambios.
+    14. `startremote` lo mismo que `start` pero guarda el archivo en un directorio remoto
+    15. `build` lo mismo que `start` pero no se queda esperando los cambios en archivo y el contenido del archivo esta optimizado para velocidad, asi que esta opcion tarda mucho mas que `start` pero el archivo generado es mas compacto y corre a mayor velocidad del lado del cliente
+    16. `buildremote` lo mismo que `build` pero guarda el archivo en el compartido
+  17. Lo que hay que notar es que `start y build` es para que se pueda hacer el desarrollo local y cualdo esten listos los cambios se utiliza `buildremote` para enviar los datos a el compartido.
+  
+  ## Funcionamiento de index.php
+  
+  Solo se tiene la dependenciad de __Slim__ para las paginas escritas en PHP. Unicamente utilizo la funcionalidad de `router` del framework.
+  
+  La estructura de estos scripts es:
+  
+  * `requiere`'s Aqui se piden las dependencias de la pagina y basicamente solo esta Slim
+  * `$app = new Slim();` Se crea una instancia del framework para usarlo en la aplicacion
+  * `$app->get('/', 'function')` La lista de _rutas_ de la aplicacion. Slim es un framework que posibilita _REST_ por lo que ademas de `get` se puede usar `post`, `put`, `update` y `delete`. Una cosa que hay que notar es que la funcion tiene que existir al momento de correr el script.
+  * Despues estan todas las funciones que se utilizan en la aplicacion. Cada una de estas funciones deberia de tener una sola responsabilidad. pero queda a criterio del quien continue el proyecto seguir esta recomendacion. Todas las funciones regresan la respuesta en `JSON`, con la clara excepcion de las que son utilitarias. Para convertir un objeto a JSON se utiliza `json_encode()` y para convertir el payload de las llamadas a un objeto de PHP, se utiliza `json_decode($json_var, true)`. Ese `true` es para que sea ub objeto "normal" y no uno genérico.
+  
+  ## Para mandar correos
+  
+  1. Para el envio de correos se utiliza php, y la manera "facil" de hacerlo es creando una tarea programada para que lo ejecute
+  2. La tarea programada esta en el server `wmatvmoee01`, asi que una vez logeado como administrador
+  3. Se tiene que abrir la aplicacion de windows "task scheduler" y ubicar la tarea apropiada
+  4. Esta tarea corre un script que esta ubicado (de manera remota) en `\\\\wmatvmoee01\\apps\\scheduledTask` (o visto de manera local: `c:/apps/scheduledTask`)
+  5. Para este especificamente el script contiene el siguiente codigo:
+  
+  ```shell
+  @echo off
+  set PATH=C:\\apps\\GnuWin32\\bin;%PATH%
+  wget http://wmatvmlr401/lr4/ControlFallas/index.php/sendTestEmail
+  del /s sendTestEmail*
+  
+  timeout 5
+  ```
+  6. Y como pueden observar se requiere que `wget` este en la carpeta `c:\\apps\\GnuWin32\\bin`. `wget` es una utilidad de linux que funciona en la linea de comandos y que fue portada a windows, su funcion es pedir el contenido de una pagina web a travez de la linea de comandos. y el contenido que descarga como no nos interesa (solo nos interesa el correo que envió), se borra inmediatamente despues de que es generado.
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-09T14:38:34.313Z"
+updatedAt: "2017-05-09T17:42:56.199Z"

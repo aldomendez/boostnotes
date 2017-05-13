@@ -1,0 +1,24 @@
+type: "MARKDOWN_NOTE"
+folder: "2bce98388b7c8c387b77"
+title: "CSS Selectors"
+content: '''
+  # CSS Selectors
+  
+  ### Desendientes hijos
+  
+  Se separan por espacios, como en: `.demo h2`
+  
+  ### Agrupando muchos selectores
+  
+  Se separan por comas, por ejemplo: `h1, h2, h3`
+  
+  ### Agrupando seudo-clases
+  
+  Llevan un dos puntos: `a:hover`
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-26T00:31:44.458Z"
+updatedAt: "2017-04-26T01:29:56.259Z"

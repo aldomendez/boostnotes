@@ -1,7 +1,11 @@
 type: "SNIPPET_NOTE"
-folder: "c464453ed9e010b85819"
-title: ""
-description: ""
+folder: "26c085bb8c2eac83b657"
+title: "Reportes de wip"
+description: '''
+  Reportes de wip
+  
+  Areas de LR4 y 4x25
+'''
 snippets: [
   {
     name: "reporte de wip.vb"
@@ -234,6 +238,23 @@ snippets: [
       
     '''
   }
+  {
+    name: "other operations.vb"
+    mode: "VB.NET"
+    content: '''
+      osas = Array("OSAS", _
+          Array("5067-5253", "5067-5256", "FT-4X25TOSAOSA", "FT-4X25ROSAOSA"), _
+          Array("OSAT4ASSY", "OSAT4WB", "OSAT4PURGE", "OSAT4DC", "OSAT4VI", "OSAR4ASSY", "OSAR4TEST", "OSAR4VI"))
+      shim = Array("SHIM", _
+          Array("5067-5254", "5067-5255", "FT-4X25TOSASHIM", "FT-4X25ROSASHIM"), _
+          Array("SHMT4ASSY", "SHMT4FTC", "SHMT4SIL", "SHMT4REMEA", "SHMT4TEST", "SHMR4ASSY", "SHMR4VI"))
+      pkg = Array("PKG", _
+          Array("AFCP-T4X25EL-A1", "AFCP-R4X25PL-A1", "AFCP-T4X25EL-B1", "AFCP-R4X25PL-B1"), _
+          Array("PKGT4ASSY", "PKGT4WB", "PKGT4SCREE", "PKGT4SEAL", "PKGX4PRE", "PKGT4FLEX", "PKGT4WELD", _
+              "PKGX4POST", "PKGT4TST", "PKGT4PACK", "PKGR4ASSY", "PKGR4WB", "PKGR4SCREE", "PKGR4SEAL", _
+              "PKGR4WELD", "PKGR4FLEX", "PKGR4FTST", "PKGR4PACK"))
+    '''
+  }
 ]
 tags: [
   "emmanuel"
@@ -241,4 +262,4 @@ tags: [
 ]
 isStarred: false
 createdAt: "2017-04-04T14:52:42.677Z"
-updatedAt: "2017-04-04T23:14:48.361Z"
+updatedAt: "2017-04-24T10:36:10.838Z"

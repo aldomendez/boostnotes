@@ -1,0 +1,41 @@
+type: "MARKDOWN_NOTE"
+folder: "feff416a6f58c5262e51"
+title: "paquetes en npm"
+content: '''
+  paquetes en npm
+  
+  Lista de todos los paquetes instalados globalmente
+  
+  ```batch
+  npm list -g --depth=0
+  ```
+  
+  Esta es la solucion que yo utilize
+  ```
+  sudo npm uninstall `ls -1 node_modules | tr '/\\n' ' '`
+  ```
+  
+  para borarlos
+  ```
+  npm ls -gp --depth=0 | awk -F/ '/node_modules/ && !/\\/npm$/ {print $NF}' | xargs npm -g rm
+  ```
+  
+  better solution
+  
+  ```
+  npm ls -gp --depth=0 | awk -F/node_modules/ '{print $2}' | grep -vE '^(npm|)$' | xargs -r npm -g rm
+  
+  ```
+  
+  other solution
+  
+  ```
+  sudo npm list -g --depth=0. | awk -F ' ' '{print $2}' | awk -F '@' '{print $1}'  | sudo xargs npm remove -g
+  ```
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-17T23:52:48.119Z"
+updatedAt: "2017-04-18T00:12:52.243Z"

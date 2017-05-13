@@ -1,0 +1,25 @@
+type: "MARKDOWN_NOTE"
+folder: "a5ce985f5c1ddaf6bdf5"
+title: "Docker file"
+content: '''
+  # Docker file
+  
+  `docker build -t name-of-result .` When it finishes, the resulting image will be on your computer in the local Docker registry ready to be run
+  
+  ```dockerfile
+  FROM debian:sid
+  RUN apt-get -y update
+  RUN apt-get install nano
+  CMD ["/bin/nano", "/tmp/notes"]
+  ```
+  
+  ```dockerfile
+  FROM hello
+  ADD notes.txt /notes.txt
+  CMD ["/bin/nano","/tmp/notes"]
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-12T23:11:20.702Z"
+updatedAt: "2017-05-12T23:33:05.251Z"

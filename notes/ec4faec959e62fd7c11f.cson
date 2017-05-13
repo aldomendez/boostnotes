@@ -1,0 +1,20 @@
+type: "MARKDOWN_NOTE"
+folder: "144e797422e10f7400c6"
+title: "Paginas de 4x25"
+content: '''
+  # Paginas de 4x25
+  
+  Para usar solo dentro de la empresa... ;) 
+  
+  * [reporte de produccion](http://cymautocert.avagotech.net/OSA/4X25/REPORTS/REPORT.PHP)
+  * [reporte de produccion que usa gamaliel](http://wmatvmlr401/osa/4x25/reports/REPORT.PHP)
+  * [reporte de wip/tiempo de ciclo](http://wmatvmlr401/lr4/4x25cicle_time/)
+  * [Control de fallas de equipo](http://wmatvmlr401/lr4/ControlFallas/index.html?#!/list)
+  
+  Esta pagina es para el envio de correos de fallas de las maquinas de 4x25
+  * [Envio de correos](http://wmatvmlr401/lr4/ControlFallas/index.php/sendTestEmail)
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-05T13:35:32.818Z"
+updatedAt: "2017-04-24T10:35:58.709Z"

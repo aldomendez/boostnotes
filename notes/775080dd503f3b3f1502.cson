@@ -1,0 +1,31 @@
+type: "MARKDOWN_NOTE"
+folder: "1b122c1b6007697f7a4b"
+title: "Exportar slides como imagenes"
+content: '''
+  Exportar slides como imagenes
+  
+  ```vb.net
+  Sub exportSlides()
+  Const OutputFolder As String = "C:\\Temp\\"
+  Const imageBaseName As String = "Slide_"
+  Const imageWidth As Long = 1920
+  Const imageHeight As Long = 1080
+  Const imageType As String = "PNG"
+  
+  Dim oSL As Slide
+  
+      For Each oSL In ActivePresentation.Slides
+              oSL.Export OutputFolder & imageBaseName & Format(oSL.SlideIndex, "0000") & "." & imageType, imageType, imageWidth, imageHeight
+      Next 'Slide
+  End Sub
+  ```
+  
+  Hay otros metodos, pero implican hacer cambios en la configuracion del equipo para obtener imagenes a 1080p.
+  
+  Asi que mejor uso este codigo que, ademas de funcionar bien es facil de instalar
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-23T21:49:09.034Z"
+updatedAt: "2017-04-23T21:51:09.725Z"

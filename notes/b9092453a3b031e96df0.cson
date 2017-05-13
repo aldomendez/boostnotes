@@ -1,0 +1,38 @@
+type: "MARKDOWN_NOTE"
+folder: "2bce98388b7c8c387b77"
+title: "Focus styles in non interactive elements"
+content: '''
+  # Focus styles in non interactive elements
+  
+  
+  De esta manera se quitan los outlines que se generan haciendo interactivos, elementos no interactivos, sin perder los efectos cuando el elemento se hace interactivo por medio de `<a><h3></h3></a>`
+  
+  ```css
+  h1:focus,
+  h2:focus,
+  h3:focus,
+  h4:focus,
+  h5:focus,
+  h6:focus {
+    outline: 0;
+  }
+  ```
+  
+  La mejor opcion para animar la trancicion a ciertos elementos seria la siguiente:
+  
+  ```css
+  section:focus {
+    outline: 0;
+    animation: yellowFade 3s fordward;
+  }
+  
+  @keyframes yellowfade {
+    from {background: lightyellow; }
+    to {background: white; }
+  }
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-03T11:16:57.315Z"
+updatedAt: "2017-05-03T11:22:24.343Z"

@@ -1,0 +1,39 @@
+type: "MARKDOWN_NOTE"
+folder: "d4e9110bb3333776e8c9"
+title: "Documentacion de salida"
+content: '''
+  # Documentacion de salida
+  
+  Carpetas importantes:
+  
+  * [Aplicaciones de LR4](\\\\wmatvmlr401\\htdocs\\lr4)
+  * [Aplicacion de OEE](\\\\wmatvmoee01\\htdocs)
+  * [Aplicaciones en desarrollo y codigo fuente variado](C:\\apps) en el equipo `1P1JTY1`
+  * [Servidor viejito de aplicaciones](\\\\cymautocert.avagotech.net\\osaapp). Existen como respaldo pero ya todas estan en `Aplicaciones de LR4`
+  * [Compartido en server de OEE](\\\\wmatvmoee01\\shared). Ejecutables y archivos de respaldo variados
+  * [Codigo fuente y repositorios de proyectos](\\\\wmatvmoee01\\git). Se tiene que usar git para manipular copias de los datos de este lugar
+  
+  ## Editores de codigo que uso
+  
+  * Visual Studio Code (de microsoft y gratis)
+  * Sublime text 3 (de pago)
+  * Brackets (de adobe, y gratis)
+  
+  ## Uso de git para accesar datos del repositorio
+  
+  Si se quieren obtener datos del repositorio en `\\\\wmatvmoee01\\git\\4x25-controlequipos.git`.
+  1. Considerando que se tiene Git instalado
+  2. Ingresar en una linea de comandos:
+  2. `git clone file:////wmatvmoee01/git/4x25-controlequipos.git`
+  3. Esto generará la carpeta `4x25-controlequipos` y en ella generara los datos del proyecto.
+  4. Si y solo si, el proyecto tiene un archivo que se llama `package.json`
+    * Se tiene que ejecutar `npm install`
+    * Dentro del archivo `package.json` existe un apartado que se llama `scripts` esos son los comandos que se pueden usar para construir los ejecutables del proecto
+  
+  > Instalador de git `\\\\wmatvmoee01\\shared\\Git-2.10.1-32-bit.exe`
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-09T12:12:13.177Z"
+updatedAt: "2017-05-09T17:44:19.081Z"

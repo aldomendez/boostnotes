@@ -1,0 +1,261 @@
+type: "MARKDOWN_NOTE"
+folder: "d4e9110bb3333776e8c9"
+title: "Generador de historia de OEE"
+content: '''
+  ## Generador de historia de OEE
+  
+  El generador de historia, surgio de la necesidad de tener que reconstruir los datos historicos de OEE. Sin embargo, para esto, se tienen que tener las siguientes consideraciones:
+  
+  * Correr en Nodejs
+      - Por que no en PHP, como lo hace todo el sistema?
+          + PHP tiene problemas corriendo querys con tiempos muy largos, como los que se requieren para correr los querys semanales por ejemplo.
+          + PHP tiene el problema de que no se pueden ejecutar directamente los querys de manera programatica, algo tiene que ejecutar la pagina y esto es lo que desencadena el script de PHP. Y aun asi tiene un tiempo muy limitado para ejecutar todos los querys
+  * Tiene la forma de conectar directamente con la base de datos de _Oracle_
+      - El setup es [complicado][https://github.com/oracle/node-oracledb] pero se realiza una sola vez, y es un metodo respaldado por _Oracle_
+  * Tiene que ser facil de configurar
+  
+  ### USO
+  
+  #### Estructura de los directorios
+  
+  La aplicacion tiene la siguiente estructura, omito lo que no nos interesa de momento por brevedad:
+  
+  ```
+  -- oee-monitor
+      └- errors
+      └- executed
+      └- sql
+          └- weekly_report
+          └- oee_insert_Engines_10Gb_25Gb.sql
+      └- history-native.js
+      └- execution-plan.ini
+  ```
+  
+  El contenido de este directorio es el siguiente:
+  
+  * `oee-monitor`: Es el padre de todo
+      - `errors`: Cuando se generan errores al ejecutar un query, el query que tiene el error junto con la informacion del error se guarda en este directorio.
+      - `executed`: Todos los querys que se ejecutan se guardan en este directorio. En el archivo de configuracion hay una bandera para que no se guarden los querys, `saveParsedQuery`.
+      - `sql`: Es la que contiene los querys que seran ejecutados. Los archivos estan nombrados de una manera especifica y se detalla [en el formato de querys][formato-de-querys]
+      - `history-native.js`: Es el script que hace la magia.
+      - `execution-plan.ini`: Es el archivo de configuracion
+  
+  
+  #### history-native.js
+  
+  1. Toma el archivo de configuracion
+  2. Averiagua que es lo que tiene que hacer (que querys tiene que ejecutar). 
+  3. Y si los tiene que ejecutar (ademas de solo sustituir las fechas en los archivos de acuerdo a el cron que se tiene configurado).
+  4. Inicia la coneccion con la base de datos y le pasa los querys para que sean ejecutados.
+  5. La base de datos le responde con la cantidad de registros que fueron afectados 
+  6. Y con los errores que se hallan generado (en caso de que existan, claro), y en esos casos guarda el query y el motivo de error en la carpeta de errores
+  7. Los archivos dentro de la carpeta de errores se pueden abrir directamente dentro de alguna aplicacion que ejecute SQL para _debuggear_ el query, o si fue problema de coneccion para repetir ese query fallido, en vez de tratar de configurar el script para que solo genere y ejecute ese query.
+  
+  #### execution-plan.ini
+  
+  Este es el archivo que lo controla todo, es como el _director_, y todo lo que tiene este archivo es ___requerido___.
+  
+  Un ejemplo de este archivo:
+  ```ini
+  ; Contiene las rutas a los querys que se van a ejecutar 
+  ;para obtener los historiales
+  
+  ; Example 201601010629 | now
+  ; formato: yyyymmddhh24mi
+  startDate = 201609030629
+  endDate = now
+  
+  ; Solo lunes 6:30am
+  cronMask = 0 30 6 * * 1
+  ; Todos los dias 6:30am
+  ; cronMask = 0 30 6 * * *
+  
+  queueSize = 20
+  execute_query = 1
+  saveParsedQuery = 1
+  ; 0 = NO
+  ; 1 = YES
+  
+  ; This is if we want to run 'production' version of the querys
+  sql[]=sql/oee_insert_Engines_10Gb_25Gb.sql
+  ; sql[]=sql/weekly-report/oee_insert_LR4_OSA_LIV.sql
+  ; sql[]=sql/weekly-report/oee_insert_LR4_OSA_Assy.sql
+  
+  [database]
+  user=apogee
+  password=eegopa1928
+  connection=mxapps
+  ```
+  
+  ##### Configuracion
+  
+  * `startDate`: [yyyymmddhhmi | now] Es la fecha en la que iniciara a generar los querys. Por ejemplo `201601010000` se usa por ejemplo cuando tengo que correr un query a media noche del Enero 01 del 2016.
+  * `endDate`: [yyyymmddhhmi | now] Es la fecha en la que terminará de correr los querys. Muchas veces solo pongo now, que es la fecha y hora actual.
+  * `cronMasks`: [`String`] Indica cuando se tiene que estar ejecutando el script, las reglas se rescriben mas adelante
+  * `queueSize`: [`Number`] Limita la cantidad de peticiones que se almacenan en memoria. Usualmente lo mantengo en 20, cuando se termina los 20 archivos, genera los siguientes 20 y asi hasta agotar todos los querys que tiene que ejecutar.
+  * `execute_query`: [0 | 1] Si se tiene que ejecutar el query
+      - `0`: No se ejecuta el query
+      - `1`: Si se ejecuta el query
+  * `saveParsedQuery`: Si se tiene que guardar el query generado. Generalmente lo mantengo en 1, para saber que es lo que le estoy diciendo a la base de datos que se tiene que ejecutar
+      - `0`: No se guarda el query generado
+      - `1`: Si se guarda el query generado
+  * `sql[]`:Es una lista de todos los querys que se tienen que ejecutar, cada query adicional que se tenga que ejecutar, tiene que comenzar con `sql[]=` justo como el ejemplo anterior.
+      - Los comentarios se denotan con `;` por lo que si no se requiere ejecutar un query determinado, en lugar de borrarlo, se puede poner un `;` al frente de la linea.
+  
+  
+  #### cronMasks
+  
+  `cron`, es una herramienta en _*nix_, que sirve para ejecutar commandos a intervalos regulares, usando un formato sencillo[^1], que describe en que punto en el tiempo se tiene que ejecutar un comando, por ejemplo, si queremos ejecutar un script todos los dias a las 6:30am, utilizaremos `0 30 6 * * *` lo podemos leer como: _cuando el segundo sea 0, y en el minuto sea 30, y la hora sea 6, de cualquier dia del mes, de cualquier mes, y en cualquier dia de la semana_. Es sencillo y poderoso y te muestro un diagrama de lo que es cada elemento:
+  
+  ```ini
+  ; Todos los dias 6:30am
+  cronMask = 0 30 6 * * *
+  ; * * * * * *
+  ; ┬ ┬ ┬ ┬ ┬ ┬
+  ; | | | | | |
+  ; | | | | | └- day of week (0 - 7) (0 or 7 is Sun)
+  ; | | | | └--- month (1 - 12)
+  ; | | | └----- day of month (1 - 31)
+  ; | | └------- hour (0 - 23)
+  ; | └--------- minute (0 - 59)
+  ; └----------- second (0 - 59, optional)
+  
+  ```
+  
+  En algunas versiones puedes poner listas separadas por comas por ejemplo `0 0 6,10,14,18 * * *` corre cada 4 horas de las 6am a las 6pm. Pero **Esta version no lo soporta!**. Asi que estas advertido.
+  
+  ### Formato de querys
+  
+  Existen querys que hacen direrentes cosas, hay los que calculan datos y los guardan y los que calculan y los retornan. Esto por que realmente la mayor parte del tiempo solo quiero calcular los datos y guardarlos a la misma base de datos. Por lo que les evito el camino de ida y vuelta y le pido a la base de datos que los guarde directamente. Ademas la parte de la aplicacion que utiliza los datos de OEE, los obtiene directamente de la base de datos (de los datos que previamente hemos guardado).
+  
+  ## Manera manual
+  
+  Si se considera que montar todo esto es un exceso, se puede hacer de manera manual. Solo hay que tomar el query y insertar las fechas de _inicio_ y _final_ utilizando los _marcadores de posición_ `:inicio` y `:final` respectivamente. Los querys que cuyo nombre contiene `query` solo muestran los datos. Los querys cuyo nombre contiene `insert` inserta los resultados a la tabla `apogee@oee_master2` directamente.
+  
+  ## Tablas que se utilizan para el OEE
+  
+  Todo el OEE funciona con 2 tablas el catalogo y la historia de calculos.
+  
+  * `oee_master2` contiene la historia de calculos, esto para evitar estar tocando la base de datos para calcular los datos en cada revision.
+  * `oee_machine_catalog` Esta contiene la configuracion de las maquinas y los procesos que se ejecutan, asi como los tiempos de proceso que se consideran para cada uno de los codigos que se procesan en un equipo determinado. Usualmente se tiene una entrada por cada codigo que se ejecuta en cada maquina. 
+  
+  ### Descripcion de las tablas
+  
+  ```sql
+  
+  PROMPT CREATE TABLE oee_machine_catalog
+  CREATE TABLE oee_machine_catalog (
+    catalog_id       NUMBER(5,0)  NOT NULL,
+    creation_date    DATE         DEFAULT sysdate NULL,
+    display_name     VARCHAR2(25) NULL,
+    bu_id            NUMBER(5,0)  NULL,
+    depto            VARCHAR2(25) NULL,
+    product          VARCHAR2(25) NULL,
+    process          VARCHAR2(25) NULL,
+    machine          VARCHAR2(25) NULL,
+    ideal_cycle_time NUMBER       NULL,
+    planed_downtime  NUMBER       NULL
+  )
+    STORAGE (
+      NEXT       1024 K
+    )
+  /
+  
+  PROMPT ALTER TABLE oee_machine_catalog ADD PRIMARY KEY
+  ALTER TABLE oee_machine_catalog
+    ADD PRIMARY KEY (
+      catalog_id
+    )
+    USING INDEX
+      STORAGE (
+        NEXT       1024 K
+      )
+  /
+  
+  
+  GRANT SELECT ON oee_machine_catalog TO apogee_read_only_role;
+  
+  ```
+  
+  Esta tabla es la que contiene el catalogo de equipos y procesos.
+  
+  * `catalog_id` Es el _primary key_ de la table
+  * `creation_date` Es la fecha en la que se creo la entrada en la tabla
+  * `display_name` Es el nombre del equipo como se conoce regularmente
+  * `bu_id` es el id del dueño del equipo
+  * `depto` es el nombre del departamento al que pertenece
+  * `product` es el producto que corre.
+  * `process` es el nombre del proceso que corre
+  * `machine` es el nombre del equipo como aparece en la base de datos
+  * `idel_cycle_time` es el tiempo ideal de proceso para esta combinación de _maquina, proceso y producto_
+  * `planed_downtime` es el tiempo que se planea que el equipo este detenido. usualmente esta al 80~90% para equipos que son restriccion. O mas bajo que eso para equipos que son 2da o 3ra restricción (hay que utilizar teoria de restricciones para esto). Tiene que ser un valor entre `0` y `1`. `0`: no se debe de detener para nada, `1`: no debe de correr para nada
+  
+  ```sql
+  PROMPT CREATE TABLE oee_master2
+  CREATE TABLE oee_master2 (
+    id                    NUMBER(8,0)   NOT NULL,
+    creation_dt           DATE          DEFAULT sysdate NULL,
+    bu                    VARCHAR2(25)  NULL,
+    s_start_dt            DATE          NULL,
+    s_end_dt              DATE          NULL,
+    depto                 VARCHAR2(25)  NULL,
+    product               VARCHAR2(150) NULL,
+    process               VARCHAR2(25)  NULL,
+    machine               VARCHAR2(25)  NULL,
+    sample_time_span      NUMBER        NULL,
+    total_production_time NUMBER        NULL,
+    build_qty             NUMBER        NULL,
+    avg_ct                NUMBER        NULL,
+    avail                 NUMBER        NULL,
+    perf                  NUMBER        NULL,
+    yield                 NUMBER        NULL,
+    oee                   NUMBER        NULL
+  )
+    STORAGE (
+      NEXT       1024 K
+    )
+  /
+  
+  PROMPT ALTER TABLE oee_master2 ADD PRIMARY KEY
+  ALTER TABLE oee_master2
+    ADD PRIMARY KEY (
+      id
+    )
+    USING INDEX
+      STORAGE (
+        NEXT       1024 K
+      )
+  /
+  
+  
+  GRANT SELECT ON oee_master2 TO apogee_read_only_role;
+  ```
+  
+  * `id` Es el _primary key_ de la table
+  * `creation_id` Fecha en la que se creo el registro en la base de datos
+  * `bu` el id del Gerente de Unidad de negocio
+  * `s_start_dt` Fecha de inicio del calculo
+  * `s_end_dt` Fecha de final del calculo
+  * `depto` Departamento al que pertence el equipo
+  * `product` Productos involucrados en el calculo
+  * `process` Proceso que se ejecuta en el equipo
+  * `machine` Maquina de la que se esta haciendo el calculo
+  * `sample_time_span` Tiempo que se considera en el calculo en minutos. ___10080 = 1 semana___
+  * `total_production_time` El tiempo que estuvo productivo el equipo, usualmente es menor al sample_time_span. Puede ser mayor que `sample_time_span` cuando el tiempo de ciclo del equipo es muy largo.
+  * `build_qty` La cantidad de piezas producidas
+  * `avg_ct` el tiempo de ciclo promedio de las piezas
+  * `avail` La Disponibilidad del equipo
+  * `perf` El desempeño del equipo
+  * `yield` Representa la calidad del equipo
+  * `oee` Es la multiplicacion de _avail_, _perf_ y _yield_ 
+  
+  
+  [https://github.com/oracle/node-oracledb]: install-node-oracle/ "Detalla como instalar node-oracle"
+  [formato-de-querys]: #formato-de-querys
+  
+  [^1]: El formato es muy sencillo, pero es muy facil equivocarse, por ejemplo, no puedes poner dos espacios juntos (me paso, 2 horas buscando el error... :P ). 
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-09T17:44:22.296Z"
+updatedAt: "2017-05-09T18:57:17.485Z"

@@ -1,0 +1,43 @@
+type: "MARKDOWN_NOTE"
+folder: "820d457c36b67ef4151a"
+title: "Aplicacion de configuraciones"
+content: '''
+  # Aplicacion de configuraciones
+  
+  Desglose
+  
+  Esto me ayudaria a tener una grupo de aplicaciones genericas que despues con un cambio en la direccion a la que piden la informacion se conviertan en la aplicacion de otra linea y que tenga todo lo que necesitan para funcionar.
+  Una de las aplicaciones que se me ocurren de entrada son las pantallas de los semaforos, estas tienen configuraciones en JSON que estan almacenadas en archivos de texto en lugares que el personal que esta a cargo de estos archivos, regularmente no puede accesar. Por lo que una aplicacion web seria una buena opcion, ademas de que al ser versionadas y estar en una base de datos, mejoran en estabilidad y rastreabilidad, puedo saber cuando se cambio por quien. (es un efecto colateral muy bueno).
+  Otras son la aplicaciones de captura de fallas, que solo contendrian la lista de maquinas que se requiere analizar y de donde sacar los datos. Justo como se hace con el semaforo, que tambien se puede utilizar la configuracion en linea para este proposito.
+  Una opcion que se me ocurre de base de datos es noms, pero no se que tenga una version para windows que simplemente funcione, y lo unico que me queda para inicar con las pruebas es una version utilizando PHP y PDO::sqlite. Asi estara toda la informacion en la base de datos, sera facil hacer querys en los datos y estara a la disposicion sin ser bromosa, el downside es que este tipo de base de datos permite el acceso a cualquiera que quiera y tenga acceso al archivo (que siendo el servidor que es, y teniendo la configuracion que tiene, cualquiera con ganas o necesidad de accesar, tiene la oportunidad de hacerlo)  De ahi que se requeriría tener una base de datos mas robusta y con control de usuarios. Estaba pensanso en MySQL y PostgreSQL, la ultima es la que me hace mas sentido, pero me gustaria porder usarla un poco mas antes de utilizarla formalmente, por que seria la primera ver que la utilizo para algo.
+  
+  La forma de llevar la rastreabilidad de los datos la veo sencilla, cada registro tendra
+  Fecha en la que se realizo el registro
+  El ID del registro
+  Bandera de OLD, CURRENT
+  Bandera de ACTIVO, INACTIVO
+  Numero del API con la que trabajo [ejemplo: 1.0.0]
+  Y en texto plano la configiracion en JSON lista para ser enviada
+  
+  Quiero que exista una tabla que lleve el contador de accesos que se realizan a un registro.
+  ID del registro al que pertenece
+  El valor que representa el numeros de accesos que se han hecho a alguna aplicacion.
+  
+  
+  Iniciar con la creacion de la aplicacion
+  Que contenga lo necesario para responder a un query sencillo.
+  Siendo yo http://wmatvmlr401/lr4/captura-de-fallas
+  Haciendo uso de la API version 1.0.0
+  Cual es la configuracion que necesito para trabajar
+  
+  Ya que sea posible trabajar con las llamadas a la aplicacion, necesitare una forma sencilla de poder crear y actualizar nuevas configuraciones. Con cada modificacion, se tiene que crear un nuevo registro con la nueva configuracion y marcar la configuracion antigua como obsoleta.
+  
+  Una de las cosas que me gustaria hacer es poder -mas adelante- contar con un archivo de configuracion que defina el formato en el que se tiene que estar guardando la configuracion para cada una de las aplicaciones. y que cada version implemente un formato especifico. Una forma de hacerlo seria utilizar una version de lo que hace waterline para definir la configuracion de los modelos de datos con los que trabaja. Esto estaria definido en etapas posteriores del proyecto. Ya que en esta etapa la aplicacion no estaria pensada para trabajar con semejante carga de desarrollo.
+  
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-06T03:59:07.659Z"
+updatedAt: "2017-05-06T03:59:46.571Z"

@@ -1,0 +1,41 @@
+type: "MARKDOWN_NOTE"
+folder: "ed71588a89228ddb536f"
+title: "Laser backup"
+content: '''
+  # Laser backup
+  
+  Este query sirve para hacer el backup de los laser, 
+  
+  ```sql
+  SELECT assy_serial_num, serial_num, SubStr(serial_num,-4) laser_id, part_num FROM trk_assembly
+  WHERE last_upd_date > SYSDATE -90
+  AND (part_num LIKE '%127' OR part_num LIKE '%129')
+  ;
+  
+  DROP TABLE laserids;
+  
+  CREATE TABLE laserids AS (
+    SELECT serial_num, laser1id, laser2id, laser3id, laser4id, process_date FROM los_assembly
+      WHERE serial_num IN (
+        SELECT assy_serial_num FROM trk_assembly
+          WHERE assy_date > SYSDATE -30
+          AND (part_num LIKE '%127')
+  ))
+  ;
+  SELECT * FROM laserids
+  ;
+  
+  SELECT * FROM trk_assembly
+    WHERE assy_date > SYSDATE -30
+    AND (part_num LIKE '%127')
+  
+  ```
+  
+  De lo que estuve platicando con Joel, es conveniente poner un trigger en la tabla de `los_assembly` para que en cada insercion, se carge la informacion del laser en la tabla que contruiremos, con el `laser_id` y el `serial_num` de cada laser, incluyendo el serial del waffer al que pertenece, para facilitar el la busqueda y analisis futuro del desempeno del material
+  
+  `part_num = '5067-5071', '001045420'`
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-23T21:55:59.446Z"
+updatedAt: "2017-05-01T03:32:37.735Z"

@@ -1,9 +1,59 @@
 {
   "folders": [
     {
-      "key": "c464453ed9e010b85819",
+      "key": "144e797422e10f7400c6",
       "color": "#6AA5E9",
       "name": "Default"
+    },
+    {
+      "key": "26c085bb8c2eac83b657",
+      "color": "#E10051",
+      "name": "excel"
+    },
+    {
+      "key": "820d457c36b67ef4151a",
+      "color": "#2BA5F7",
+      "name": "random"
+    },
+    {
+      "key": "feff416a6f58c5262e51",
+      "color": "#2BA5F7",
+      "name": "npm"
+    },
+    {
+      "key": "1b122c1b6007697f7a4b",
+      "color": "#30D5C8",
+      "name": "PowerPoint"
+    },
+    {
+      "key": "0e9abda7f52b24e253cf",
+      "color": "#3FD941",
+      "name": "AutoHotkey"
+    },
+    {
+      "key": "ed71588a89228ddb536f",
+      "color": "#FF8E00",
+      "name": "SQL"
+    },
+    {
+      "key": "2bce98388b7c8c387b77",
+      "color": "#E10051",
+      "name": "CSS"
+    },
+    {
+      "key": "7fe2aa08283e2ecb872a",
+      "color": "#B013A4",
+      "name": "Proyectos"
+    },
+    {
+      "key": "d4e9110bb3333776e8c9",
+      "color": "#2BA5F7",
+      "name": "Documentacion de salida"
+    },
+    {
+      "key": "a5ce985f5c1ddaf6bdf5",
+      "color": "#E8D252",
+      "name": "docker"
     }
   ],
   "version": "1.0"

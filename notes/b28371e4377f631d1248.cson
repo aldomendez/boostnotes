@@ -1,5 +1,5 @@
 type: "MARKDOWN_NOTE"
-folder: "c464453ed9e010b85819"
+folder: "144e797422e10f7400c6"
 title: "Aplicacion de control de mantenimientos a equipos"
 content: '''
   # Aplicacion de control de mantenimientos a equipos
@@ -15,17 +15,17 @@ content: '''
   * __COR__ `{x:number +- 1um;y:number +- 1um; periodicidad: diario}`
   * __Rubber tool__ [Revisar goma/ Deteccion de vacio al colocar pieza en BS], [revisar imagen correcta y referencia este en el centro de la herramienta] {periodicidad: diario}
   * __gripper__
-    * __interna__ {min:0.79mm; max:0.85mm; periodicidad: diario}
-    * __externa__ {max:1.31mm; periodicidad: diario} [revisar medidas de las gripper interno y externo]
+    * __interna__ `{min:0.79mm; max:0.85mm; periodicidad: diario}`
+    * __externa__ `{max:1.31mm; periodicidad: diario}` [revisar medidas de las gripper interno y externo]
     * __imagen/ down__ [Referencia con respecto al centro] [revisar que la griper lado izquiero sea rectangular/ lado derecho tenga chaflan] [realizar prueba de imagen(?: no se como seria)]
     * __imagen/ side__ [Referencia con respecto al centro]
-    * __presion del gripper__ {presion:5psi; periodicidad: diario}
+    * __presion del gripper__ `{presion:5psi; periodicidad: diario}`
   * __bondstation__ [tiene que estar limpio / sin contaminacion]
-    * __presion__ {presion: 2psi; periodicidad: semanal}
+    * __presion__ `{presion: 2psi; periodicidad: semanal}`
     * __centro__ [referencia debe de estar al centro / revisar con GRID] {periodicidad: semanal}
-    * __autofocus__ {periodicidad: diario}
+    * __autofocus__ `{periodicidad: diario}`
   * __lapstation__ [campana de reflexion tiene que estar centrada en 0] {periodicidad: diario} [Reviar el punto de referencia GDB(?: como)]
-  * __pines de epoxy__ {periodicidad: diario}[revisar imagen correcta y referencia en el centro ];[calbiar si tiene exceso de epoxy];[revisar las bandas del slide];[pulir la herramienta]
+  * __pines de epoxy__ `{periodicidad: diario}`[revisar imagen correcta y referencia en el centro ];[calbiar si tiene exceso de epoxy];[revisar las bandas del slide];[pulir la herramienta]
   * __UV__ [limpar "lente" con cotonete aqua y alcohol];[calibracion de referencias automaticas]
     * __potencia__ {lamda: 6.32 +- .2; periodicidad: semanal; nivel del onmicure: varia} [anotar nivel del omnicure]
   * __detector__ {x: 0 +-0.5; y: 2.3 +- 0.5; z:0 +- 0.5; periodicidad: diario} [revisar la referencia del detector]
@@ -70,4 +70,4 @@ tags: [
 ]
 isStarred: false
 createdAt: "2017-04-03T18:36:35.614Z"
-updatedAt: "2017-04-03T19:42:07.838Z"
+updatedAt: "2017-04-24T10:36:01.534Z"

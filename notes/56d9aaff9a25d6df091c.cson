@@ -1,0 +1,43 @@
+type: "MARKDOWN_NOTE"
+folder: "a5ce985f5c1ddaf6bdf5"
+title: "Running a container"
+content: '''
+  # Running a container
+  
+  `docker ps` muestra imagenes que se estan ejecutando
+  `docker ps -a` muestra imagenes que se estan ejecutando y las que estan detenidas (en efecto _all_ todas las imagenes
+  `docker images` aparecen las imagenes que tengo disponibles
+  `docker run -ti ubuntu:latest bash` where `-ti` means _terminal interactive_
+  `docker ps --format $FORMAT` para que aparezcan de manera vertical los datos de las imagenes que estan ejecutando
+  
+  
+  ## Running a network attached container
+  
+  `docker run --rm -ti -p 45678:45678 -p 45679:45679 --name echo-server ubuntu:14.04 bash`
+  
+  `nc -lp 45678 | nc -lp 45679` netcat listen port 45678 relayed to cetcat listening port 45679
+  
+  `docker-machine ip` para saber que ip tiene la maquina que esta ejecutando
+  
+  `nc 192.168.1.118 45678` para conectarse al servicio de arriba
+  
+  ## Docker network
+  
+  `docker network create example` Crea una red en la que puedo conectar imagenes
+  
+  `docker run --rm -ti --net=example --name server ubuntu:14.04 bash` Crea una imagen que se conecta directamente a la red que acabo de crear
+  
+  `nc -lp 1234` Crea un listener
+  
+  `docker run --rm -ti --link server --net=example --name client ubuntu:14.04 bash` Crea un nuevo contenedor que esta conectado a la imagen anterior y que ademas pertenece a la red example
+  
+  `docker run -p 127.0.0.1:1234:1234/tcp` para que acepte todas la conexiones que vengan de el host solamente y hacia ese puerto.
+  
+  ## Delete old images
+  
+  `docker rmi [image-name][image-id]` 
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-12T02:44:50.669Z"
+updatedAt: "2017-05-12T22:57:38.357Z"

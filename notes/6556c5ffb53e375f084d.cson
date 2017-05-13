@@ -1,0 +1,13 @@
+type: "MARKDOWN_NOTE"
+folder: "a5ce985f5c1ddaf6bdf5"
+title: "docker rust"
+content: '''
+  # docker rust
+  
+  `docker run -it --rm -v $(pwd):/source jimmycuadra/rust`
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-12T23:44:44.931Z"
+updatedAt: "2017-05-12T23:44:53.945Z"

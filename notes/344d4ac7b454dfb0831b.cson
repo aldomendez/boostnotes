@@ -1,0 +1,437 @@
+type: "MARKDOWN_NOTE"
+folder: "26c085bb8c2eac83b657"
+title: "VBA Managing files and data"
+content: '''
+  # VBA Managing files and data
+  
+  ## Fucusing data using filters
+  ### Selecting the current region
+  
+  ```vb.net
+  strAdress = ActiveCell.CurrentRegion.Address
+  ```
+  
+  ### Creating a filter
+  
+  ```vb.net
+  Dim strAddress As String
+  ' This is important to have because of is not there the filter is applied to
+  ' the last filtered range in the sheet as opossed to the currently selected one
+  Selection.Autofilter
+  
+  strAdress = ActiveCell.CurrentRegion.Address
+  ActiveSheet.Range(strAddress).AutoFilter Field:=2, Criteria1:="Idaho"
+  ```
+  
+  ### Chaining criteria using AND
+  ```vb.net
+  Dim strAddress As String
+  
+  strAdress = ActiveCell.CurrentRegion.Address
+  
+  Selection.AutoFilter
+  
+  ActiveSheet.Ragnge(strAddress).AutoFilter Field:=1, Criteria1:="2014"
+  ActiveSheet.Ragnge(strAddress).AutoFilter Field:=2, Criteria1:="Montana"
+  ```
+  
+  ### Combining criteria using OR
+  
+  There are two ways the old way and the current way and here is only the current way, the current way have support for more than 2 criteria to be applied
+  
+  ```vb.net
+  Dim strAddress As String
+  
+  strAdress = ActiveCell.CurrentRegion.Address
+  
+  Selection.AutoFilter
+  
+  ActiveSheet.Range(strAddress).AutoFilter Field:=2, Criteria1:=Array("Arizona","California","Oregon"), Operator:=xlFilterValues
+  ```
+  
+  ### Finding unique items using xlFilter
+  
+  This have the caveat to work on the entire row, so if you have a multicolum table all have to have the same info to be skipped
+  
+  ```vb.net
+  Dim strAddress As String
+  strAdress = ActiveCell.CurrentRegion.Address
+  Selection.AutoFilter
+  ActiveSheet.Range(strAddress).AdvancedFilter Action:=vlFilterInPlace, Unique:=True
+  ```
+  ### Restoring all unfiltered states
+  
+  This will "apply" a NULL filter in this field, effectivelly removing the filter
+  ```vb.net
+  sub RemoveFilter()
+    Dim strAddress as String
+    strAddress = ActiveCell.CurrentRegion.Address
+    ActiveSheet.Range(strAddress).Autofilter Field:=2
+  End Sub
+  ```
+  
+  This will remove all filters and unhide all columns and rows
+  ```vb.net
+  sub ClearAllFilters()
+    ActiveSheet.ShowAllData
+  End Sub
+  ```
+  
+  ## Managing Files using VBA
+  
+  
+  ### Determining if a file exists
+  
+  ```vb.net
+  Private Function FileThere(strFileNama) As Boolean
+  FileThere = (Dir(strFileName) <> "")
+  End Function
+  
+  Sub CheckIfIsThere()
+    bIsThere = FileThere("Target.xlsx")
+    MxgBox(bIsThere)
+  End Sub
+  ```
+  ### Determining if a folder exists
+  
+  ```vb.net
+  Public Function PathThere(strPathName) as Boolean
+  PathThere = (Dir(strPathName), vbDirectory) <> "")
+  End Function
+  ```
+  
+  ### Detecting whether a file is open
+  
+  ```vb.net
+  Private Function CheckIfOpen(strFileName) As Boolean
+  Dim w as Workbook
+  ' This make VBA try to ignore the error
+  On Error Resume Next
+  
+  set w = Workbooks(strFileName)
+  If Err Then CheckIfOpen = False else CheckIfOpen = True
+  
+  ' This instruct VBA to behave as normal when it encounters an error
+  On Error GoTo 0
+  End Function
+  ```
+  
+  ### Open a workbook
+  
+  ```vb.net
+  Sub OpenAWorkbook()
+  ' Open a file from the current directory
+  Workbooks.Open Filename:="Target.xlsx"
+  End Sub
+  ```
+  
+  ### Closing a workbook
+  
+  ```vb.net
+  Sub CloseAWorkbook()
+  Application.DisplayAlerts = False
+  ActiveWorkbook.Save
+  ActiveWindow.Close
+  
+  ' OR this way to close a specific workbook
+  On Error Resume Next
+  Workbooks("Target.xsls").Close
+  On Error Goto 0
+  Application.DisplayAlerts = True
+  End Sub
+  ```
+  
+  ### Save a woorkbook under a new name
+  
+  ```vb.net
+  Sub NewWrbName()
+  ActiveWorkbook.SaveAs Filename:="NewName.xlsm"
+  End sub
+  ```
+  
+  ### Saving a workbook as a CVS file
+  
+  ```vb.net
+  ActiveWorkbook.SaveAs Filename:="", FileFormat:=xlCSV
+  ```
+  
+  ## Managing Worksheets using VBA
+  
+  ### Checking if a worksheet exists
+  
+  ```vb.net
+  Private Function WrshtExists(strSheetName) As Boolean
+  On Error Resume Next
+  WrshtExists = (Sheets(strSheetName).Name <> "")
+  On Error GoTo 0
+  End Function
+  ```
+  
+  ### Creating and renaming worksheets
+  
+  ```vb.net
+  Sheets.Add
+  ' OR
+  Sheets.Add Before:= Sheets(1)
+  ' OR to create the new sheets after the last one (right)
+  Sheets.Add After:=Sheets(Sheets.Count)
+  ```
+  
+  ### Copying a worksheet within the active workbook
+  
+  ```vb.net
+  Sheets("January").Select
+  Sheets("January").Copy After:=Sheets(Sheets.Count)
+  ```
+  
+  ### Copying a worksheet to a new workbook
+  
+  ```vb.net
+  Sheets("February").Select
+  Sheets("February").Copy
+  ```
+  
+  ### Copying a worksheet to an existing workbook
+  
+  ```vb.net
+  Sub CopyToExisting()
+  
+  Dim strCurrentWorkbookName As String
+  
+  strCurrentWorkbookName = ActiveWorkbook.Name
+  
+    If CheckIfOpen("TargetForCopy.xslx") = False Then
+      Workbooks.Open Filename:="TargetForCopy.xlsx")
+      Workbooks(strCurrentWorkbookName).Activate
+    End If
+    Sheets("January").Select
+    Sheets("January").Copy Before:=Workbooks("TargetForCopy.xslx").Sheets(1)
+  
+  End Sub
+  Private Function CheckIfOpen(strFileName)
+    Dim w As Workbook
+    On Error Resume Next
+    Set w = Workbooks(strFileName)
+    If Err Then CheckIfOpen = False Else CheckIfOpen = True
+    On Error Goto 0
+  End Function
+  ```
+  
+  ### Moving a worksheet withing the active workbook
+  
+  ```vb.net
+  Sheets("March").Move Before:=Sheets(1)
+  Sheets("March").Move After:=Sheets(2)
+  ```
+  
+  ### Move a sheet to a new workbook
+  
+  ```vb.net
+  Sub MotetoNew()
+  ' If you don't especify the name of the workbook, it moves it
+  ' to a new workbook
+  Sheets("January").Move
+  End Sub
+  ```
+  
+  ### Moving the workbook to an existing workbook
+  
+  ```vb.net
+  ' You neet to check if the workbook exists and is open...
+  Sheets("Januery").Select
+  Sheets("January").Move Before:=Workbooks("TargetWorkbook.xlsx").Sheets(1)
+  ```
+  
+  ## Taking advantage of Built-in Functions
+  
+  ### Using the build-in dialog box
+  
+  ```vb.net
+  Dim varFName as Variant
+  
+  varFName = Application.GetOpenFilename
+  ```
+  
+  ### Calculating data using Excel worksheet functions
+  
+  ```vb.net
+  Sub CalcPayment()
+  
+  Dim dRate As Double
+  Dim iPeriods As Integer
+  Dim cPV As Currency, cPayment As Currency
+  
+  dRate = 0.06
+  iPeriods = 12
+  cPV = 18000
+  
+  cPayment = Application.WorkSheetFunction.Pmt(dRate / iPeriods, cPV) * -1
+  Msgbox (cPayment)
+  End Sub
+  ```
+  
+  ### Using the current date and time
+  
+  ```vb.net
+  MsgBox(Date)
+  MsgBox(Time)
+  ```
+  
+  ```vb.net
+  Sub CreateDateString()
+  Dim sYear as string, smonth as string, sday as string
+  dim sfulldate as string
+  
+  ' cStr = Cast as string
+  syear = CStr(Year(Date))
+  if month(date) < 10 then
+    smonth = "0" & CStr(Month(Date))
+  else: smonth = CStr(Month(Date))
+  end if
+  
+  if Day(date) < 10 then
+    sday = "0" & CStr(Day(Date))
+  else: sDay = CStr(Day(Date))
+  end if
+  
+  sfulldate = syear & smonth & sday
+  
+  Msgbox(sfulldate)
+  End Sub
+  
+  sub CreateSheetWithDate()
+  'You can check if the sheet hasn't already be taken (or it will throw an error)
+  Sheets.Add After:=Sheets(Sheets.Count)
+  sheets(sheets.count).Name = CreateDateString()
+  end sub
+  ```
+  
+  ### Removing spaces from before and after
+  
+  To remove spaces in excel there are functions like `Trim` `LTrim` and `RTrim` to remove both sides, or left or right
+  
+  
+  ## Managing Charts Using VBA
+  
+  ### Creating a chart
+  
+  ```vb.net
+  sub CreateChart()
+  
+  ActiveSheet.Shapes.AddChart.Select
+  
+  ActiveChart.CharType = xlColumnClustered
+  ActiveChart.SetSourceData Source:=Range("March!$A$1:$B$8")
+    
+  end sub
+  ```
+  
+  Other type of charts are:
+  * `xlColumnClustered` _default_
+  * `xlArea`
+  * `xlColumnStacked`
+  * `xlLine`
+  * `xlLineMarkers`
+  * `xlPie`
+  * `xlXYScatter`
+  
+  Changing `ActiveSheet.Shapes.AddChart.Select` to `Charts.Add` create the chart on a new Chart Sheet
+  
+  ### Moving a chart to a chart sheet
+  
+  ```vb.net
+  sub MoveToChartSheet
+  ActiveSheet.ChartObjects(1).Activate
+  
+  ActiveChart.ChartArea.Select
+  
+  Application.CutCopyMode = False
+  
+  ActiveChart.Location Where:=xlLocationAsNewSheet
+  
+  end sub
+  ```
+  
+  ### Ading a new data series to a chart
+  
+  ```vb.net
+  sub AddDataSeries()
+  dim intSeriesCount as integer
+  
+  Activesheet.ChartOnjects(1).Activate
+  ActiveChart.ChartArea.Select
+  Active.SeriesCollection.NewSeries
+  
+  intSeriesCount = ActiveChart.SeriesCollection.Count
+  ActiveChart.SeriesCollection(intSeriesCount).Name = "March!$C$1"
+  ActiveChart.SeriesCollection(intSeriesCount).Values = "=March!$C$2:$C$8"
+  end sub
+  ```
+  
+  ### Export a chart as an Image
+  
+  ```vb.net
+  sub exportAsImage()
+  ActiveSheet.ChartObjects(1).Activate
+  ActiveChart.ChartArea.Copy
+  
+  Sheets("Target").Activate
+  Range("Target!$A$1").Select
+  
+  Activate.Pictures.Paste.Select
+  end sub
+  ```
+  
+  ### Create a sparkline
+  #### Line
+  ```vb.net
+  sub createSparkLine()
+    Range("E1").SparkLineGroups.Add Type:=xlSparkLine, SourceData:="B2:B8"
+  end sub
+  ```
+  #### Column
+  ```vb.net
+  Range("E1").SparkLineGroups.Add Type:=xlSparkColumn, SourceData:="B2:B8"
+  ```
+  #### win/loss
+  ```vb.net
+  Range("E1").sparkLineGroups.Add Type:=xlSparkColumnsStacked100, SourceData:=""B2:B8"
+  ```
+  #### Delete a spark line
+  ```vb.net
+  Range("E1").Select
+  Selection.SparkLineGroups.Clear
+  ```
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-06T16:08:59.868Z"
+updatedAt: "2017-04-13T00:08:11.805Z"

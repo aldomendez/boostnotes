@@ -1,0 +1,30 @@
+type: "MARKDOWN_NOTE"
+folder: "2bce98388b7c8c387b77"
+title: "CSS Padding"
+content: '''
+  CSS Padding
+  
+  longhand
+  ```css
+      padding-top: 2px;
+      padding-bottom: 2px;
+      padding-right: 2px;
+      padding-left: 2px;
+  ```
+  
+  short hand
+  
+  ```css
+  padding: 2px 2px 2px 2px;
+  ```
+  
+  starting for the top clockwise is __top right bottom left__
+  
+  ```css
+    padding: 2px;
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-27T19:10:01.055Z"
+updatedAt: "2017-04-27T19:13:42.601Z"

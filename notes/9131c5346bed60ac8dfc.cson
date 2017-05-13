@@ -1,0 +1,30 @@
+type: "MARKDOWN_NOTE"
+folder: "144e797422e10f7400c6"
+title: "Using require.resolve() to calculate module-relative file paths in node.js"
+content: '''
+  #Using require.resolve() to calculate module-relative file paths in node.js
+  
+  Tradicional way
+  
+  ```js
+  console.log(chalk.red.bold("Using __dirname"))
+  console.log(path.join( __dirname, "data.txt"))
+  console.log(chalk.dim(fileSystem.readFileSync(path.join(__dirname,"data.txt"))))
+  ```
+  
+  The require.resolve() method uses the same mechanics for locating a module (ie, the thing you normally "require"); but instead of loading it. `.resolve` returns the calculated path to the given module. And since `require()` can use module-relative paths, so can `require.resolve()`
+  
+  ```js
+  console.log(chalk.red.bold("Using __dirname"))
+  console.log(require.resolve( "./data.txt" ))
+  console.log(chalk.dim(fileSystem.readFileSync(require.resolve( "./data.txt" ))))
+  ```
+  
+'''
+tags: [
+  "node"
+  "resolve"
+]
+isStarred: false
+createdAt: "2017-04-07T12:22:51.083Z"
+updatedAt: "2017-04-24T10:36:05.387Z"

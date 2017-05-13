@@ -1,0 +1,22 @@
+type: "MARKDOWN_NOTE"
+folder: "7fe2aa08283e2ecb872a"
+title: "Seguimiento de material de pruebas"
+content: '''
+  # Seguimiento de material de pruebas
+  
+  Se esta buscando una manera de llevar el seguimiento del material que sale de pruebas, la intension es rastrear los checks que ha tenido una pieza a lo largo del proceso.
+  
+  1. Inicialmente se tiene que tener acceso a la pieza
+  2. Al cargar la pieza a el sistema de consulta, el sistema, tiene que hacer la consulta a la base de datos, para revisar los estatus que tiene
+  3. Si es Pass o Fail, este tiene que ser almacenado como un check en la base de datos del proyecto
+  4. En caso de ser Fail se tiene que almacenar que tipo de fail corresponde a este material
+  5. Con base a la informacion de la falla ,se tiene que mostrar un RFC
+'''
+tags: [
+  "hugo_vazquez"
+  "lr4"
+  "seguimiento_de_material"
+]
+isStarred: false
+createdAt: "2017-05-02T11:21:10.300Z"
+updatedAt: "2017-05-02T12:27:39.347Z"

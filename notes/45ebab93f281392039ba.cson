@@ -1,0 +1,38 @@
+type: "MARKDOWN_NOTE"
+folder: "ed71588a89228ddb536f"
+title: "Datos de OEE"
+content: '''
+  # Datos de OEE
+  
+  Estos querys son para sacar los datos de OEE de la planta, (los que ya estan calculados y almacenados en la base de datos
+  
+  Solamente los que pertenecen a el proceso de `ShimAssy`
+  ```sql
+  SELECT * FROM oee_machine_catalog WHERE process = 'ShimAssy';
+  ```
+  
+  Actualiza los datos del catalogo de maquinas y tiempos
+  ```sql
+  UPDATE oee_machine_catalog SET ideal_cycle_time = 10.88 WHERE machine = 'CYBOND83';
+  ```
+  
+  Se obtiene la lista de todos los departamentos y procesos, asi como la ultima fecha en la que se realizo el calculo, este es espacialmente importante para generar poder correr los querys que generan los calculos semanales.
+  ```sql
+  SELECT * FROM (
+  SELECT depto, process,To_Char( Max(s_end_dt) , 'yyyy-mm-dd hh24 mi') last_dt, To_Char(Max(s_end_dt),'Dy')Dy FROM oee_master2 WHERE sample_time_span = '10080'
+  GROUP BY depto, process
+  ORDER BY depto, process
+  ) ORDER BY last_dt, depto DESC
+  ;
+  ```
+  Borra todos los calculos que se tienen guardados que corresponden a una maquina en particular
+  
+  ```sql
+  DELETE FROM oee_master2
+  WHERE machine in ('CYBOND83','CYBOND10')
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-23T23:10:11.349Z"
+updatedAt: "2017-05-02T11:17:50.379Z"

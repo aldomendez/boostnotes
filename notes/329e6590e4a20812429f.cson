@@ -1,0 +1,32 @@
+type: "MARKDOWN_NOTE"
+folder: "ed71588a89228ddb536f"
+title: "Calculo de quertiles de tiempo de ciclo por maquina"
+content: '''
+  # Calculo de quertiles de tiempo de ciclo por maquina
+  
+  Considera solamente tiempos de piezas PASS
+  
+  
+  ```sql
+  SELECT
+    system_id, part_num ,Count(system_id) qty, round(min(cycle_time),3) min_ct,
+    round(percentile_disc(0.25) within GROUP (ORDER BY cycle_time asc),3) q1,
+    round(percentile_disc(0.5) within GROUP (ORDER BY cycle_time asc),3) q2,
+    round(percentile_disc(0.75) within GROUP (ORDER BY cycle_time asc),3) q3
+    from (
+    select system_id, serial_num, pass_fail, process_date,
+    part_num,  cycle_time, step_name from phase2.four_x25_shim_assembly@mxoptix fx25
+    where process_date between
+      to_date('2016-11-21 06:30','yyyy-mm-dd hh24:mi') and
+      to_date('2016-11-28 06:30','yyyy-mm-dd hh24:mi') and
+      system_id in ('CYBOND83','CYBOND10')
+      AND pass_fail = 'P'
+    )
+    GROUP BY system_id, part_num
+  
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-23T23:19:01.185Z"
+updatedAt: "2017-04-23T23:19:51.599Z"

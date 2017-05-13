@@ -1,0 +1,28 @@
+type: "MARKDOWN_NOTE"
+folder: "820d457c36b67ef4151a"
+title: "Siempre un numero entre 0 y 255"
+content: '''
+  # Siempre un numero entre 0 y 255
+  
+  Esto lo saque en opalCalc
+  
+  La intension es tener siempre un numero entre 0 y 255
+  
+  y esto aparentemente funciono:
+  
+  ```
+  inver(n) = ((((n + 128) % 256) - floor((n + 128)%256))×256)
+  
+  inve(0)
+  inver(1)
+  inver(100)
+  inver(200)
+  inver(256)
+  inver(300)
+  (300 % 256 ) ÷10
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-14T20:45:09.698Z"
+updatedAt: "2017-04-14T21:02:26.735Z"

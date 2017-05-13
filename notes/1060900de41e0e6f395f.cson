@@ -1,0 +1,313 @@
+type: "SNIPPET_NOTE"
+folder: "0e9abda7f52b24e253cf"
+title: "Este codigo es el que tengo en la empresa, me ayuda a tener muchas cosas optimizadas en mi computadora. Principalmente, no tengo que usar el mouse para hacer el cambio entre una ventana y otra, las intercambio usando el teclado numerico"
+description: "Este codigo es el que tengo en la empresa, me ayuda a tener muchas cosas optimizadas en mi computadora. Principalmente, no tengo que usar el mouse para hacer el cambio entre una ventana y otra, las intercambio usando el teclado numerico"
+snippets: [
+  {
+    name: "laptop-enhancer.ahk"
+    mode: "text"
+    content: '''
+      ; #InstallKeybdHook
+      inifile = \\\\cymautocert.avagotech.net\\osaapp\\apps\\ahk\\laptop.ini
+      ; useShortcut := True
+      ; ~::
+      ; 	useShortcut := !useShortcut
+      ; Return
+      
+      
+      ; Cargo los nombres de las pestañas desde el archivo ini
+      ; para que nos podamos mover para ella con el pulsar de una tecla
+      Loop, 10
+      {
+      	shortCutName := "Numpad" . A_Index - 1 . "Shortcut"
+      	IniRead, %shortCutName%, %inifile% , windows, %shortCutName%
+      	; MsgBox % %shortCutName%
+      }
+      
+      ; Cambiamos el matchMode para que tome encuenta cualquier
+      ; parte del titulo de la ventana.
+      SetTitleMatchMode, 2
+      
+      ; Toma la ventana actual y la configura para que sea usada cuando se presiona
+      ; una tecla del teclado numerico
+      !#Numpad0::
+      !#Numpad1::
+      !#Numpad2::
+      !#Numpad3::
+      !#Numpad4::
+      !#Numpad5::
+      !#Numpad6::
+      !#Numpad7::
+      !#Numpad8::
+      !#Numpad9::
+      	shortCutName :=  SubStr(A_ThisHotKey, 3) . "Shortcut"
+      	oldValue := %shortCutName%
+      	WinGetActiveTitle, %shortCutName%
+      	activeContent := %shortCutName%
+      	InputBox, %shortCutName%, Changing shortcut:,This is the old value %oldValue%, , , , , , , , %activeContent%
+      	if ErrorLevel
+      	    MsgBox, No se cambio nada.
+      	else {
+      		activeContent := %shortCutName%
+          	; MsgBox, The window "%activeContent%" is now set a a shortcut for "%shortCutName%"
+      		Iniwrite, %activeContent%, %inifile%, windows, %shortCutName%
+      	}
+      Return
+      
+      #Numpad0::
+      #Numpad1::
+      #Numpad2::
+      #Numpad3::
+      #Numpad4::
+      #Numpad5::
+      #Numpad6::
+      #Numpad7::
+      #Numpad8::
+      #Numpad9::
+      	shortCutName :=  SubStr(A_ThisHotKey, 2) . "Shortcut"
+      	ToolTip %  SubStr(A_ThisHotKey, 2) . ": " . %shortCutName%
+      	SetTimer, RemoveToolTip, 800
+      return
+      
+      RemoveToolTip:
+      SetTimer, RemoveToolTip, Off
+      ToolTip
+      return
+      
+      MsgBox, app reloaded
+      
+      Numpad0::
+      Numpad1::
+      Numpad2::
+      Numpad3::
+      Numpad4::
+      Numpad5::
+      Numpad6::
+      Numpad7::
+      Numpad8::
+      Numpad9::
+      	shortCutName :=  A_ThisHotKey . "Shortcut"
+      	WinActivate % %shortCutName%
+      Return
+      
+      ; Insert ñ and µ with a better shortcut
+      !n:: send {Asc 164} ;ñ
+      !u:: send {Asc 230} ;µ
+      !a:: send {Asc 160} ;á
+      !e:: send {Asc 130} ;é
+      !i:: send {Asc 161} ;í
+      !o:: send {Asc 162} ;ó
+      
+      +!n:: send {Asc 165} ;Ñ
+      ; +!u:: send {Asc 233} ;Θ
+      ; +!a:: send {Asc 181} ;╡
+      ; +!e:: send {Asc 144} ;É
+      ; +!i:: send {Asc 214} ;╓
+      ; +!o:: send {Asc 224} ;α
+      
+      
+      
+      ; buscare otro shortcut para la ú por que utilizo mas la µ
+      ; !u:: send {Asc 163}
+      
+      ^!r::Reload  ; Assign Ctrl-Alt-R as a hotkey to restart the script.
+      
+      
+      ; Copia el contenido del portapapeles a una variable,
+      ; copia el texto seleccionado a el portapapeles y lo mueve a otra variable
+      ; despues regresa el contenido original del portapapeles a este
+      
+      ; #c::
+      ; oCB := ClipboardAll  ; save clipboard contents
+      ; Send, ^c
+      ; ClipWait,1
+      
+      ; < do whatever you originally wanted with selected text in "clipboard" variable >
+      
+      ; ClipBoard := oCB         ; return original Clipboard contents
+      ; return
+      
+      ; #c::
+      ; loop 2{
+      ; 	yPos := ((A_Index-1)*7)+4
+      ; 	shortCutName := "Numpad" . A_Index - 1 . "Shortcut"
+      ; 	MsgBox, mod(%A_Index%,2)
+      ; 	If mod(%A_Index%,2) = 1
+      ; 	{
+      ; 		pos = "x1 y".yPos." w460 h20"
+      ; 		; MsgBox, %ypos%
+      ; 		Gui, Add, Text, %ypos% , %shortCutName%
+      ; 	} else {
+      ; 		valueOfShortcut := %shortCutName%
+      ; 		Gui, Add, Text, , %valueOfShortcut%
+      ; 	}
+      ; }
+      ; 	; Generated using SmartGUI Creator 4.0
+      ; 	Gui, Show, x185 y122 h391 w467, New GUI Window
+      ; Return
+      
+      ; GuiClose:
+      ; ExitApp
+      ;
+      ;http://10.14.162.254:8080 = PMQPSK
+      ;http://10.14.162.54:8080/ = LR4
+      ;http://10.14.162.209:8080 = ENGINES
+      ;http://10.14.162.11:8080/ = OSAS
+      
+      ^!s::
+        Suspend
+        return
+      
+      :*:/gm::aldomendez86@gmail.com
+      :*:/am::aldo.mendez@avagotech.com
+      :*:/fox::aldo.mendez@foit-foxconn.com
+      :*:/ava::aldo.mendez@avagotech.com
+      
+      :*:/gad::git add .{enter}
+      :*:/gl::git log --oneline --decorate --graph{ENTER}
+      :*:/gc::git commit
+      :*:/gs::git status{enter}
+      
+      :*:/om::oee_master2
+      :*:/oc::oee_machine_catalog
+      
+      ; ::1,::
+      ; sendInput * ````{Left 1}
+      ; return
+      
+      ; ::2,::
+      ; sendInput * ``<>``{Left 2}
+      ; return
+      
+      ; ::;;::
+      ; send </>{Left 1}
+      ; return
+      
+      :*:/name::Aldo Mendez
+      :*:/tel::8681175145
+      ; :*:/error::console.trace((new Error()).stack)
+      
+      ; :*:/c::=IF(D2>1000,D2,"w"&D2)
+      
+      :*:/annoy::
+      SetTimer, CloseMailWarnings, 100000
+      return
+      
+      :*:/pwd::
+      sendInput erodriguez{tab}semmanuel{enter}
+      return
+      
+      CloseMailWarnings:
+      SendInput, Mira la pelicula de U.N.C.L.E. {Enter}
+      return
+      
+      positionGivenImage(imageName:=0){
+        if(imageName = 0) {
+          return {x: 0, y: 0, error: True, message: "Se requiere el nombre de la imagen"}
+        }
+        ImageSearch, FoundX, FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, *25 %imageName%
+        if (ErrorLevel = 2) {
+          ToolTip Algo impide realizar la busqueda, revisa que la imagen sea accesible
+          SetTimer, RemoveToolTip, 800
+          return {x: 0, y: 0, error: True, message: "No se pudo realizar la busqueda"}
+        }
+        if (ErrorLevel = 1) {
+          ToolTip No se pudo encontrar la imagen
+          SetTimer, RemoveToolTip, 800
+          return {x: 0, y: 0, error: True, message: "No se pudo encontrar la imagen"}
+        }
+        return {x:FoundX, y: FoundY, error: False, message: ""}
+      }
+      ^1::
+        cursor:= positionGivenImage("PMITEM.png")
+        if (!cursor.error){
+          ToolTip Encontre la imagen
+          SetTimer, RemoveToolTip, 800
+          mousemove cursor.x + 30, cursor.y + 30, 100
+        }
+      Return
+      
+      ^'::
+        cont := True
+        while cont
+        {
+          cursor:= positionGivenImage("PMITEM.png")
+          if (!cursor.error){
+            SetTimer, RemoveToolTip, 800
+            mousemove cursor.x + 30, cursor.y + 30, 30
+          } else {
+            cont := False
+          }
+          Click
+          ; Inicia la carga de un manenimiento
+          Sleep, 1000
+          send {WheelDown}
+          send {WheelDown}
+          send {WheelDown}
+          send {WheelDown}
+          send {WheelDown}
+          send {WheelDown}
+          Sleep, 1000
+          cursor:= positionGivenImage("PMComboSelect.png")
+          if (!cursor.error){
+            FoundX := cursor.x
+            FoundY := cursor.y
+            mousemove, %FoundX%, %FoundY%, 10
+            Click
+            FoundY := FoundY + 12
+            FoundX := FoundX
+            mousemove, %FoundX%, %FoundY%, 10
+            Click
+            FoundY := FoundY - 12
+            FoundX := FoundX + 100
+            mousemove, %FoundX%, %FoundY%, 10
+            Click
+            Sleep, 1000
+          } else {
+            cont := False
+          }
+        }
+      Return
+      
+      :*:/cv::https://docs.google.com/document/d/1Xg96lZQqQMp_lTTwm9EwE43VahySsoaA57-J8IhLEFs/edit
+      :*:sharecv::https://docs.google.com/document/d/1Xg96lZQqQMp_lTTwm9EwE43VahySsoaA57-J8IhLEFs/edit?usp=sharing
+      
+      :*:shareengcv::https://docs.google.com/document/d/15KVLIg3UybR8mOJBKHuOzIjLvG83SmYauJcxo8gCOdY/edit?usp=sharing
+      
+      :*:.pmqpsk::http://10.14.162.254:8080
+      :*:.lr4::http://10.14.162.54:8080/
+      :*:.engines::http://10.14.162.209:8080
+      :*:.osas::http://10.14.162.11:8080/
+      :*:twitterfav::https://docs.google.com/spreadsheets/d/1dDiSYlwV6cPCJAJna5WcDZ-1j6MZy_wjMwSFgxsvpyw/
+      
+      ::cssdebugger::[].forEach.call(document.querySelectorAll("*"),function(a){{}a.style.outline="1px solid {#}"{+}(~~(Math.random()*(1<<24))).toString(16){}})
+      
+      ; ivan.flores
+      ; htm01284
+      
+      :*:/exportslides::
+      (
+      Sub exportSlides()
+      Const OutputFolder As String = "C:\\Temp\\"
+      Const imageBaseName As String = "Slide_"
+      Const imageWidth As Long = 1920
+      Const imageHeight As Long = 1080
+      Const imageType As String = "PNG"
+      
+      Dim oSL As Slide
+      
+          For Each oSL In ActivePresentation.Slides
+              oSL.Export OutputFolder & imageBaseName & Format(oSL.SlideIndex, "0000") & "." & imageType, imageType, imageWidth, imageHeight
+      Next 'Slide
+      )
+      
+      video := 0
+      
+      
+    '''
+  }
+]
+tags: []
+isStarred: false
+createdAt: "2017-04-23T21:51:33.826Z"
+updatedAt: "2017-04-23T21:54:22.822Z"

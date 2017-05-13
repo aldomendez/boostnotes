@@ -1,0 +1,61 @@
+type: "MARKDOWN_NOTE"
+folder: "ed71588a89228ddb536f"
+title: "Query estandard para el calculo de OEE"
+content: '''
+  # Query _estandard_ para el calculo de OEE
+  
+  Este query es particularmente especial para mi, ya que proporciona el calculo de OEE de manera muy especifica y rapida con mucha informacion relativa a el proceso que se esta monitoreando, asi mismo considera diferentes tiempos de proceso para cada una de los codigos que se procesan y distintos tiempos para cada maquina que procesa cada codigo.
+  
+  Depende de otra tabla que pondre mas adelante
+  
+  ```sql
+  --fileName=sql/oee_insert_4x25_Tosa_Shim_Assy.sql
+  
+  --query===
+  
+  insert into oee_master2 (ID,s_start_dt,s_end_dt,BU,DEPTO,PRODUCT,PROCESS,MACHINE,SAMPLE_TIME_SPAN,total_production_time,build_qty,AVG_CT, AVAIL, PERF, YIELD, oee)
+  select rownum+(select max(id) from oee_master2) id,to_date('2017-03-20 06:30','yyyy-mm-dd hh24:mi') s_start_dt, to_date('2017-03-27 06:30','yyyy-mm-dd hh24:mi')
+  s_end_dt, a.* , (availability * performance * yield) oee from (
+      -- Second level, group aggregates per machine
+      select
+          bu,depto,
+          'all' product, '4x25_ShimAssy' process, system_id,
+          round((to_date('2017-03-27 06:30','yyyy-mm-dd hh24:mi') - to_date('2017-03-20 06:30','yyyy-mm-dd hh24:mi'))*24*60,0) SAMPLE_TIME_SPAN,
+          round(sum(total_production_time),0) total_production_time, sum(build_qty) build_qty, sum(avg_ct) avg_ct,
+          sum(total_production_time)/round(((to_date('2017-03-27 06:30','yyyy-mm-dd hh24:mi') - to_date('2017-03-20 06:30','yyyy-mm-dd hh24:mi'))*24*60)*(1-planed_downtime),0) availability
+          ,sum(perfstp1)/sum(total_production_time)  performance,sum(good_pieces)/sum(build_qty) yield
+          from (
+          -- First level, calculates values per code
+          select bu_id bu,depto,
+                -- Deletes duplicates, only left one of each different
+                'all' product,
+                process,system_id,
+                sum(cycle_time) total_production_time,
+                count(serial_num) build_qty,
+                round(sum(cycle_time)/count(serial_num),2) avg_ct,
+                sum(cycle_time) availability,
+                min(ideal_cycle_time)* count(serial_num)perfstp1 ,--min(ideal_cycle_time) idct,
+                sum(case when PASS_FAIL = 'P' then 1 else 0 end) good_pieces,
+                planed_downtime
+          from (
+            select system_id, serial_num, part_num, pass_fail, process_date, step_name, cycle_time/60  cycle_time
+            FROM phase2.four_x25_shim_assembly@mxoptix
+            where system_id in ('CYBOND83','CYBOND10')
+            AND process_date between
+            to_date('2017-03-20 06:30','yyyy-mm-dd hh24:mi') and
+            to_date('2017-03-27 06:30','yyyy-mm-dd hh24:mi') and
+            (cycle_time/60) < 1000
+          ) a
+          left join apogee.oee_machine_catalog b on a.system_id = b.machine
+            -- this part split by code and assign its corresponging cycle time given the machine and code
+            where case when a.part_num in (select product from apogee.oee_machine_catalog where process = 'ShimAssy' group by product) then a.part_num else 'all' end  = b.product
+            group by system_id, bu_id, depto, process, machine,ideal_cycle_time,planed_downtime
+  
+      )b group by process,bu,depto, system_id,planed_downtime
+  )a
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-04-23T23:15:04.908Z"
+updatedAt: "2017-04-23T23:18:22.044Z"

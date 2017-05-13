@@ -1,0 +1,41 @@
+type: "MARKDOWN_NOTE"
+folder: "820d457c36b67ef4151a"
+title: "Aplicacion de la camara"
+content: '''
+  # Aplicacion de la camara
+  
+  Con esta aplicacion se busca mejorar la toma de deciciones con respecto a las fallas que se generan en la linea _(cualquier linea)_. Las fallas actualmente se recolectan y la unica informacion que se tiene de estas son los comentarios que las operadoras o tecnicos _principalmente las operadoras_ ingresan a la base de datos. Actualmente les tenemos que creer o revisar el material, para lo que se tiene que buscar fisicamente la pieza y ubicar el modo de falla, (en caso de que sea visual) y compararlos contra los comentarios ingresados, para verificar que sean correctos.
+  
+  El flujo de la aplicacion tiene que ser algo como lo siguiente:
+  
+  1. Suplantar la aplicacion actual de captura de fallas, para lo que se tiene que ingresar 
+    * el numero de operador
+    * el numero se carrier o el numero de serie, lo que sea que se tenga a la mano
+    * Por parte de la aplicacion, se tiene que poder anotar la estacion de trabajo que se esta utilizando, _el nombre de la maquina_
+  2. Cargar la informacion del material _pieza o carrier_
+  3. En este momento se comienza a tomar la imagen de la camara para mostrarla en la computadora.
+  4. Mostrar una representacion del tipo de pack con las piezas que se tienen 
+  4. _opcional_ Si se tiene el numero de laser de la pieza mostrarlo en la pantalla para que sea corroborado _inplace_
+  5. Si se encuentra una pieza con un daño fisico, se hara click sobre el pack y se tiene que llenar la siguiente informacion
+    * Componente dañado
+    * Tipo de daño
+    * Si el daño se considera catastrofico (se pueden hacer anotaciones unicamente). Osea que si paso o fallo la pieza.
+  6. Al terminar la recoleccion de informacion que se genere el cargo por sistema y que se guarde la informacion.
+  7. De ser posible que se haga el movimiento por sistema y que se mueva por ShopFloorManager
+  8. Estar listo para comenzar de nuevo
+  
+  Otra de las cosas que se tienen que considerar es que la aplicacion sustituye el uso de microscopio, asi que la aplicacion de la camara tiene que estar preparada para correr con en una computadora con dos monitores. Y se tiene que poder configurar la aplicación para que la parte que sera la camara abra en una pantalla separada y en un monitor predeterminado.
+  
+  Dado lo anterior, al abrir la aplicacion se tiene que iniciar automaticamente el streaming de video, y apartir de aqui: 
+  * En el modo de acomodo de lente se puedieran mostrar guias para el correcto acomodo del lente.
+  * Que tome las lineas de la cuadricula del pack y que las tome como base para la medicion y posicion del lente en la cuadricula y que lo marque como correcto o incorrecto. _esto esta bien pasado y no es una prioridad, pero es un nice to have que me llama la atencion, ya que explota muy bien las capacidades del exsight_.
+  
+  
+'''
+tags: [
+  "idea"
+  "desarrollo"
+]
+isStarred: false
+createdAt: "2017-05-06T03:32:58.790Z"
+updatedAt: "2017-05-08T19:32:16.858Z"
