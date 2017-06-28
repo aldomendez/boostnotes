@@ -1,0 +1,252 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Campos calculados"
+content: '''
+  # Campos calculados
+  
+  
+  ```js
+  function (event) {
+  		var otherField = parasql.app.getWidgetById('ID2262');
+  		otherField.input.focus();
+    		otherField.setDataValue( new parasql.schema.DataValue() );
+  		otherField.input.blur();
+  }
+  ```
+  
+  __No funciona__
+  La intencion es mover los valores de las celdas para que funcionen al momento.
+  ```js
+  function updateField(targetId){
+  		var partField = parasql.app.getWidgetById(targetId);
+  		partField.fireEvent('change')
+  }
+  
+  function loadPartInfo(eventType) {
+  	//copyValue('ID1908','ID1529')
+  	//copyValue('ID1908','ID1529')
+  }
+  
+  function copyValue(originID, targetID){
+  	var dbPartField = parasql.app.getWidgetById(originID);
+      if (dbPartField) {
+  		var partField = parasql.app.getWidgetById(targetID);
+  		partField.getDataValue().setString(dbPartField.getInputElement().value);
+  		partField.displayDataValue();
+  		//partField.fireEvent('change');
+  		partField.getDataValue().setString(dbPartField.getInputElement().value);
+  		partField.displayDataValue();
+  		partField.updateDataValue(dbPartField.getInputElement().value)
+  		//partField.updateDataValue(parasql.app.getWidgetById(originID).getInputElement().value)
+  		//partField.setDataValue();
+  
+  		partField.fireEvent('change')
+  	};
+  }
+  ```
+  ## 3.WH - Receiving
+  
+  
+  
+  ```js
+  function autoRunUrlQuery() {
+      var custid = getParameterByName('name');
+      if (custid) {
+         var searchField = parasql.app.getWidgetById('ID2322');
+         searchField.getDataValue().setString(custid);
+         searchField.displayDataValue();
+  	};
+  }
+  
+  function getParameterByName(name) {
+      url = window.location.href;
+      name = name.replace(/[\\[\\]]/g, "\\\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\\+/g, " "));
+  	
+  }
+  
+  function setWhite() {
+  	parasql.app.getWidgetById('ID2262').setBackgroundColor("WHITE");
+  	parasql.app.getWidgetById('ID2262').getDataValue().setNumber(0);
+  	parasql.app.getWidgetById('ID2262').displayDataValue();
+  }
+  ```
+  
+  Cambios comparan los valores de la celda y en base a esto colorea el campo
+  ```js
+  function (event) {
+  	var skid = parasql.app.getWidgetById('ID2117').getDataValue().getString();
+  	var eskid = parasql.app.getWidgetById('ID2262').getDataValue().getString();
+  
+  	if (skid == eskid) {
+  		parasql.app.getWidgetById('ID2262').setBackgroundColor("GREEN");
+  	}
+  	else
+  	{
+  		parasql.app.getWidgetById('ID2262').setBackgroundColor("RED");
+  	}
+  
+  }
+  ```
+  
+  ```js
+  function (event) {
+  	parasql.app.getWidgetById('ID2262').setBackgroundColor("WHITE");
+  }
+  ```
+  
+  ```js
+  function (event) {
+  		var otherField = parasql.app.getWidgetById('ID2276');
+    		otherField.input.focus();
+    		otherField.setDataValue( new parasql.schema.DataValue() );
+  		  otherField.input.blur();
+  }
+  ```
+  
+  ## 3. WH STOCK
+   Funciones dentro del appscript de esta aplicacion.
+  
+  ```js
+  function autoRunUrlQuery() {
+      var custid = getParameterByName('name');
+      if (custid) {
+         var searchField = parasql.app.getWidgetById('ID2773');
+         searchField.getDataValue().setString(custid);
+         searchField.displayDataValue();
+  	   searchField.fireEvent('change');
+  	};
+  }
+  
+  function getParameterByName(name) {
+      
+      url = window.location.href;
+      name = name.replace(/[\\[\\]]/g, "\\\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\\+/g, " "));
+  	
+  }
+  
+  
+  var name;
+  function company() {
+  
+  	var sel = document.getElementById("select1");
+  	
+  	sel.remove(0);
+  	
+  	var reportWidget = parasql.app.getWidgetById('ID1043');
+  var dataTable = reportWidget.getDataTable();
+  var rows = dataTable.getRows();
+  for (var i = 0; i < rows.length ; i++) {
+      var col4Str = rows[i].getValueAt(3).getString();
+  	//console.log(col4Str + " - " + i + " - " + rows.length);
+  		
+  	var opt = document.createElement("option");
+  
+  	opt.value=i+1;
+  	opt.text = col4Str
+  	
+  	sel.add(opt, sel.options[i]);
+  }
+  	
+  	sel.removeAttribute("onfocus")
+  	
+  	sel.setAttribute("onchange","myfunction()");
+  	
+  	reportWidget.setActiveIndex(0);
+  	
+  	
+  	//var vname = parasql.app.getWidgetById('ID2686');
+  
+  	//var vlist = document.getElementById('select1').options[document.getElementById('select1').selectedIndex].text;
+  	
+  	//vname.setDataValue(vlist);
+  	
+  	
+  }
+  
+  function myfunction()
+  {
+  	
+  	
+  	var myVar;
+  	
+  	var client = document.getElementById('select1');
+  		
+  	var reportWidget = parasql.app.getWidgetById('ID1043');
+  	
+  	var clientindex = client.selectedIndex;
+  		
+  	reportWidget.setActiveIndex(clientindex);
+  	
+  	myVar = setTimeout(alertFunc, 3000);
+  	
+  
+  	
+  }
+  
+  
+  function alertFunc() {
+  	
+    //alert("Hello!");
+  	
+  var text = parasql.app.getWidgetById('ID2128');
+  
+  text.fireEvent('change');
+  }
+  
+  ```
+  
+  
+  ```js
+  function (event) {
+  	var partPrice = parasql.app.getWidgetById('ID2769').getInputElement().value;
+  	var qtyQty = parasql.app.getWidgetById('ID1531').getInputElement().value;
+  	
+  	var targetField = parasql.app.getWidgetById('ID2133');
+  	targetField.getDataValue().setString((partPrice * qtyQty));
+  	targetField.displayDataValue();
+  }
+  ```
+  
+  ```js
+  function (event) {
+  	var partPrice = parasql.app.getWidgetById('ID4106').getInputElement().value;
+  	var qtyQty = parasql.app.getWidgetById('ID1531').getInputElement().value;
+  	var targetField = parasql.app.getWidgetById('ID2133');
+  	targetField.getDataValue().setNumber(partPrice * qtyQty);
+  	targetField.displayDataValue();
+  	
+  	var price = parasql.app.getWidgetById('ID4106').getInputElement().value;
+  	var targetField = parasql.app.getWidgetById('ID1541');
+  	targetField.getDataValue().setNumber(price);
+  	targetField.displayDataValue();
+  }
+  ```
+  
+  ```js
+  function (event) {
+  
+    var charCount = event.target.getInputElement().value.length;
+    var dv = new parasql.schema.DataValue();
+    dv.setNumber(charCount);
+    var virtualNumberField = parasql.app.getWidgetById('ID1351');
+    virtualNumberField.setDataValue(dv);
+  
+  }
+  ```
+'''
+tags: [
+  "ParaSQL"
+]
+isStarred: false
+createdAt: "2017-06-01T19:37:31.399Z"
+updatedAt: "2017-06-28T16:50:10.520Z"

@@ -1,0 +1,62 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Receiving report"
+content: '''
+  Receiving report
+  
+  ```sql
+  select * from report_receiving 
+  where company_id = 70
+  and received_date between '2017-05-01' and '2017-05-15'
+  ;
+  create or replace view report_receiving as
+  select
+      c.COMPANY_NAME as company_name,
+      c.COMPANY_ID as company_id,
+      a.TRANS_REC_ID as wo,
+      a.TRANS_REC_DATE as received_date,
+      a.TRANS_REC_USER as user,
+      b.REC_FROM as vendor,
+      f.CARRIER_NAME as carrier,
+      a.TRANS_REC_TRCK as tracking,
+      a.TRANS_REC_PO as po,
+      e.PART as item,
+      e.QTY1 as qty,
+      case when a.TRANS_REC_TRCK is null or a.TRANS_REC_TRCK = 0 then '' else a.TRANS_REC_TRCK end as bln,
+      case when a.TRANS_REC_SKID is null or a.TRANS_REC_SKID = 0 then '' else a.TRANS_REC_SKID end as skids,
+      case when a.TRANS_REC_SKID_PLUS is null or a.TRANS_REC_SKID_PLUS = 0 then '' else a.TRANS_REC_SKID_PLUS end as 'skids+',
+      case when a.TRANS_REC_CARTON is null or a.TRANS_REC_CARTON = 0 then '' else a.TRANS_REC_CARTON end as carton,
+      case when a.TRANS_REC_CARTON_PLUS is null or a.TRANS_REC_CARTON_PLUS = 0 then '' else a.TRANS_REC_CARTON_PLUS end as 'carton+',
+      case when a.TRANS_REC_TRAILER is null or a.TRANS_REC_TRAILER = 0 then '' else a.TRANS_REC_TRAILER end as trailer,
+      case when a.TRANS_REC_ROLL is null or a.TRANS_REC_ROLL = 0 then '' else a.TRANS_REC_ROLL end as rolls,
+      case when a.TRANS_REC_ROLL_PLUS is null or a.TRANS_REC_ROLL_PLUS = 0 then '' else a.TRANS_REC_ROLL_PLUS end as 'rolls+',
+      case when a.TRANS_CHARGE = 1 then 'Y' else 'N' end as charge
+      -- d.COMMENTS as comments,
+      -- ,a.*
+      -- '|' as sep,
+      -- d.* 
+  from 
+      TRANS_REC a ,
+      TRANS_REC_FROM_TBL b, 
+      COMPANY c,
+      TRANSACTION_TABLE d,
+      QTY e,
+      CARRIER_TABLE f
+  where
+      a.TRANS_REC_ID = d.TRANS_REC_ID 
+  and a.COMPANY_ID = c.COMPANY_ID 
+  and b.TRANS_REC_FROM_TBL_ID = a.TRANS_REC_FROM
+  and e.REF_TRANSACTION_ID = d.TRANS_REC_ID
+  and f.CARRIER_TABLE_ID = a.TRANS_REC_CARRIER
+  -- and a.COMPANY_ID = 56
+  -- and a.TRANS_REC_DATE > now() - interval 90 day
+  -- and a.TRANS_REC_DATE between '2017-05-01' and '2017-05-03'
+  -- and (TRANS_REC_COMMENT like '%146109%' or TRANS_REC_COMMENT like '%146115%')
+      -- and TRANS_REC_USER = 'amendez'
+  ;
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-16T16:31:52.474Z"
+updatedAt: "2017-06-16T17:43:40.911Z"

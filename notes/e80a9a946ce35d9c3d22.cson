@@ -1,0 +1,14 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Mostrar error"
+content: '''
+  # Mostrar error
+  
+  ```js
+  new parasql.ui.MessagePanel('TRANS IE Required','When TRANS LOCATION is set to INTRANSIT-X,','').show();
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-05T20:23:56.341Z"
+updatedAt: "2017-06-05T20:24:17.727Z"

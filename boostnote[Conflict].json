@@ -51,24 +51,9 @@
       "name": "Documentacion de salida"
     },
     {
-      "key": "275a48f31d42892e18a4",
-      "color": "#2BA5F7",
-      "name": "NovaLink"
-    },
-    {
       "key": "a5ce985f5c1ddaf6bdf5",
-      "color": "#E10051",
-      "name": "Docker"
-    },
-    {
-      "key": "41c9aebeb56b46e1925a",
-      "color": "#B013A4",
-      "name": "GoogleAppScript"
-    },
-    {
-      "key": "d3a50d06914ca40eaf66",
-      "color": "#E10051",
-      "name": "ParaSQL"
+      "color": "#E8D252",
+      "name": "docker"
     }
   ],
   "version": "1.0"

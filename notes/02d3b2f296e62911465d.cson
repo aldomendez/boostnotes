@@ -1,0 +1,92 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Eventos en ParaSQL"
+content: '''
+  # Eventos en ParaSQL
+  
+  ## Events
+  
+  Certain objects, such as fields and HTML widgets, emit events in response to user activity. Your application can listen for these events and take specific action in response.
+  
+  Simple use cases:
+  * A __keypress__ listener on a Quick Search field; if the key pressed is the Enter key it clicks the Search button.
+  * A __render__ listener on an HTML widget; when the widget is rendered your code is called to complete the job.
+  
+  ## Event Types
+  
+  Different objects emit different types of events. A change event is emitted by all field types when its value is changed by the user. However only fields with editable text can emit a keypress event.
+  
+  ## Listeners
+  
+  Event listeners can take three forms as described below.
+  ```
+  An inline function declaration is most common:
+  function (event) { 
+    // your code here 
+  }
+  ```
+  
+  A reference to a function in your script library (your function must take a single event parameter):
+  ```
+  myFunctionName
+  ```
+  
+  An object reference where the object implements a handleEvent(event) method (advanced use cases only):
+  ```
+  document.myObject
+  ```
+  
+  Most objects will only ever have zero or one event listener, however multiple event listeners are supported.
+  Event listeners may also be added at runtime by calling widget.addEventListener(type,listener) from your code.
+  
+  See the [API Event documentation](https://www.parasql.com/about/api-docs/parasql.Event.html) for more details.
+  
+  # Examples
+  
+  A keypress event listener that automatically clicks a Search button when the user presses the Enter key (key code 13).
+  ```
+  function (event) {
+  
+    if (event.domEvent.keyCode == 13) {
+      parasql.app.getWidgetById('ID1037').performClick();
+    }
+  
+  }
+  ```
+  
+  A change event listener that clears the value of another field. Useful for clearing child cascading drop downs.
+  ```
+  function (event) {
+  
+    var otherField = parasql.app.getWidgetById('ID1068');
+    otherField.setDataValue( new parasql.schema.DataValue() );
+  
+  }
+  ```
+  
+  An input event listener that counts the number of chars in the field and puts the number in another virtual field.
+  ```
+  function (event) {
+  
+    var charCount = event.target.getInputElement().value.length;
+    var dv = new parasql.schema.DataValue();
+    dv.setNumber(charCount);
+    var virtualNumberField = parasql.app.getWidgetById('ID1351');
+    virtualNumberField.setDataValue(dv);
+  
+  }
+  ```
+  
+  A render event listener that displays Hello World within an HTML Widget.
+  ```
+  function (event) {
+  
+    event.target.getContentDiv().innerHTML = 'Hello World';
+  
+  }
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-01T17:00:56.791Z"
+updatedAt: "2017-06-01T17:03:59.387Z"

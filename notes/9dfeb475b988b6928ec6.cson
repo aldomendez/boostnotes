@@ -1,0 +1,21 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Pendientes"
+content: '''
+  # Pendientes
+  
+  WH in -> ready stock = 'RECEIVING_TIME'
+  ready stock -> stock in 
+  stock in -> stock done
+  stock done -> transfer start
+  transfer start -> transfer ready
+  imp/exp start -> brocker
+  brocker -> trans IE
+  overall load check -> shiped
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-23T18:47:50.765Z"
+updatedAt: "2017-05-25T16:44:42.155Z"

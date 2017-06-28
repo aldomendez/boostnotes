@@ -1,8 +1,50 @@
 type: "MARKDOWN_NOTE"
 folder: "d4e9110bb3333776e8c9"
-title: "Creacion de Respaldo de equipos"
-content: "# Creacion de Respaldo de equipos"
+title: "Respaldo de equipos"
+content: '''
+  [&#171; Indice](./)
+  
+  # Respaldo de equipos
+  
+  Esta guia detalla los pasos a seguir para crear y restaurar una copia de los discos duros de los equipos.
+  
+  ## Herramientas
+  
+  * Un disco duro para los respaldos
+  * Paragon _El programa que se utiliza para los respaldos_
+  * Un adaptador de USB a SATA
+  
+  ## Instalación de Paragon
+  
+  Si aun no se tiene Paragon instalado, El instalador esta disponible en la siguiente direccion: `\\\\wmatvmoee01\\shared`
+  
+  * `Paragon-700-PEE_WinInstallSNx64_10.1.28.163_000.exe` _instalador_
+  
+  Esta es la informacion de la licencia:
+  ```
+  Product: Paragon Backup & Recovery 16 (English)
+  License: PSG-700-PEE-PL
+  Serial Number: 4E0HN5-K3DGKE-RULET6-HH9UO6-UUT20R
+  ```
+  
+  > **Tienen que tener permisos de administrador para instalar el programa y ademas para poder abrir el programa.**
+  
+  ## Creación de la copia de seguridad
+  
+  1. Para la creacion de la copia de seguridad se tiene que entrar a _Paragon_
+  2. ![logo de paragon](img/paragon-logo.png)
+  3. Seleccionar de la barra superior la opcion `Main Menu`
+  4. Con la ventana lo suficientemente grande podran ver 4 opciones en el laterial izqierdo:
+  5. Seleccionen la opcion `Create single backup`
+  6. ![Create single backup](img/paragon-create-single-backup.png)
+  1. `Welcome` screen: Solo seleccionen `next >`
+  1. `Title` screen: El nombre del backup de la forma `maquina-yyyy-mm-dd[comments]` por ejemplo `CyBond2-2017-05-12`, en `Description` siempre dejo el mensaje original, asi que pueden poner lo que quieran
+  1. `Source` screen: Aqui seleccionan __Que es lo que quieren respaldar__ desde el punto de vista de la maquina que esta corriendo:
+    * `Whole computer` Es la maquina que esta corriendo windows actualmente, probablemente no es lo que quieren
+    * `Disk / Partition` Aqui aparecen todos los discos que tiene la maquina ejecutando. De las cosas que puedo hacer notar aqui es que aparece _casi siempre_ en primer lugar el disco `C:`. Basicamente el programa te da toda la informacion que tiene a la mano para hacer que la seleccion del disco sea lo mas facil posible. Esta el punto de montaje, marca, capacidad, y estructura interna. _Aparecen en el orden en el que conectaron los discos en la computadora ;)_. Asi que para este caso lo que quiero es copiar el `Disk 2` __Completo!__ Asi que tengo que hacer que se ponga todo en azul. Esto por que se puede copiar solamente una particion del disco... __Procuren que la seleccion sea a todo el disco__
+    * ![Source selection](img/paragon-source-selection.png)
+'''
 tags: []
 isStarred: false
 createdAt: "2017-05-09T19:08:10.949Z"
-updatedAt: "2017-05-09T19:11:01.847Z"
+updatedAt: "2017-05-11T15:07:55.778Z"

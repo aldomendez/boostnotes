@@ -1,0 +1,114 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "ParaSQL"
+content: '''
+  ParaSQL
+  
+  @value(Virtual.endFilterDate)
+  
+  ## Filter Records
+  You can create multiple named filters for any data object.
+  * If a filter is set to Auto Run, then that filter is run automatically when the object is first viewed.
+  * Switching a filter from Normal to Advanced allows you to specify free-form SQL syntax.
+  * Both in Normal and Advanced modes you can use @functions to insert UI values into your filters.
+  * You can place a button in your app and connect it to a data object, then set the button's action to Apply one of your filters.
+  
+  [Watch a video to learn more about Filtering Records >](https://www.parasql.com/about/videos.jsp#video-5)
+  
+  ## The Master Filter
+  The Master Filter is a special filter that is always applied in conjunction with all other filters. Leave it blank if you don't want it to restrict your other filters.
+  
+  **TIP**: The Master Filter can be used with @functions and formulas (described below) to specify dynamic filters. For example, you could use the @USER function to return the gmail address of the currently logged in user so that you could restrict the visible records to those where some field equaled that gmail address.
+  
+  ## Expressions
+  
+  You can use expressions with @functions and JavaScript syntax (instead of hard-coded values) to make your filters dynamic.
+  
+  For example, you might use @TODAY for a filter's value that is always supposed to pull up records for the current date.
+  
+  Or you might use @USER for a filter's value that needs to retrieve records that match the currently logged in user's email address.
+  You can also use an expression like:
+  @value(Virtual.Quick_Search)
+  to refer to a Virtual Field in your layout (named Quick_Search).
+  This allows you to place a Virtual Field in your app that the user can enter a value into, then refer to that value in your filter.
+  Keep in mind that you are free to use full JavaScript syntax when specifying a dynamic filter.
+  For example, you could use an expression like:
+  @TODAY + (@DAY * 7)
+  to refer to a date seven days in the future.
+  Advanced Mode
+  If you change a filter's type from Normal to Advanced you can then enter any valid SQL syntax.
+  NOTE: In Advanced mode you may also use ParaSQL @functions to insert UI values into your SQL query, but any expressions must use SQL syntax rather than JavaScript syntax (as would be used with a Normal filter).
+  Advanced Mode - Full Text Search
+  NOTE: This feature only applies to ParaSQL accounts with a dedicated server.
+  You can create a full text index across multiple columns in a table and search all of the text in all of the columns quickly and flexibly using either natural language or simple boolean expressions.
+  First, create a full text index across the columns you want to search by issuing the following command at the SQL prompt:
+  ALTER TABLE MyTableName ADD FULLTEXT INDEX (col1, col2, col3)
+  Then you can use an Advanced Filter to specify a full text natural language search as follows:
+  MATCH (col1, col2, col3) AGAINST (@value(Virtual.QuickSearch) IN NATURAL LANGUAGE MODE)
+  A full text natural language search allows the user to specify one or more words. The results returned are sorted by relevance. 
+  Example: blood pressure devices
+  You may also create an Advanced Filter to specify a full text boolean search as follows:
+  MATCH (col1, col2, col3) AGAINST (@value(Virtual.QuickSearch) IN BOOLEAN MODE)
+  A full text boolean search allows the user to specify one or more words, and use + and - syntax to require or eliminate specific words. The results returned are sorted by relevance. 
+  Example: +blood -pressure
+  Important Note On Field References
+  When referencing other fields in formulas it is important to consider the following:
+  @value(MyTable.MyField) can only refer to fields in the same record or the immediate parent record.
+  If you need to refer to a field in a child record you must use an aggregate (e.g. @sum(MyTable.MyField), @min(MyTable.MyField), etc.) or the special reference @FirstValue(MyTable.MyField) to refer to the field in the first child record; never use @value(MyTable.MyField) to refer to a field in a child record.
+  If you need to refer to a field several child records deep, you will need to 'propagate up' that value using Virtual Fields (i.e. Child B aggregates Child C, Parent A aggregates Child B).
+  The datatype returned by @value() and @FirstValue() depends upon the type of field being referenced:
+  character/notes/barcode = string
+  number = number
+  date/time/timestamp = number (Unix format; representing the number of milliseconds)
+  checkbox = boolean
+  document/image/signature = string (format varies with field type as shown below)
+  Document field string format:
+  origfilename.ext;intFileSize;intUnixTimestamp;objName
+  Image field string format:
+  origfilename.ext;intFileSize;intUnixTimestamp;objName;imageUrl
+  Signature field string format:
+  joe@acme.com;lat=0.0&lon=0.0;intUnixTimestamp;objName;imageUrl
+  Functions & Operators
+  In the @functions() below T represents a table name and C represents a column name.
+  You may also use a field's ID in place of T.C to create an absolute field reference; this is only necessary if the table.field reference is ambiguous.
+  @value(T.C)	Returns the value of a specific field on a record.
+  @sum(T.C)	Returns the total value of all child records.
+  @avg(T.C)	Returns the average value of all child records.
+  @min(T.C)	Returns the minimum value of all child records.
+  @max(T.C)	Returns the maximum value of all child records.
+  @count(T.C)	Returns the number of child records with non-blank values.
+  @sd(T.C)	Returns the standard deviation of all child records.
+  @FirstValue(T.C)	Returns the value of a specific field from the first child record.
+  @ReportValue(ID,T,C)	Returns the value of the selected row in a Report object. ID must be the ID of a Report object. Report objects do not trigger recalc, so this function should only be used in query filters, default value calculations, etc.
+  @USER	Returns the email address of the currently logged in user.
+  @ROLE	Returns the name of the Role associated with the currently logged in user.
+  @NOW	Returns the current date and time.
+  @TODAY	Returns the current date.
+  @DAY	Returns a constant equal to the number of milliseconds in a day; used for date arithmetic.
+  @IsPrinting	Returns true if the app is currently printing; useful with visibility formulas to hide or display objects when printing.
+  @NewPrimaryKey	Returns the next counter value for an automatic primary key.
+  + - * /	Add, Subtract, Multiply, Divide
+  x ? y : z	If x then y else z
+  ==	Equals
+  !=	Not Equals
+  >	Greater than
+  >=	Greater than or equals
+  <	Less than
+  <=	Less than or equals
+  &&	AND operator
+  ||	OR operator
+  null	Represents the value of a blank field.
+  ()	Parentheses may be used for grouping.
+  JavaScript Resources
+  Formulas may contain any valid JavaScript code in addition to the @functions listed above. Reference documentation:
+  Operators
+  Statements Note that you can declare your own custom functions (see File > App Scripts...) and call them in any formula.
+  String Object
+  Number Object
+  Date Object Note that @value(MyTable.MyDateField) returns dates as integers in Unix millisecond format.
+  Math Object
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-23T18:52:30.277Z"
+updatedAt: "2017-05-23T18:56:03.307Z"

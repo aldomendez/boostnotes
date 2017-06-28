@@ -1,0 +1,72 @@
+type: "MARKDOWN_NOTE"
+folder: "ed71588a89228ddb536f"
+title: "Transpose table"
+content: '''
+  Transpose table
+  
+  ```sql
+  select * from(
+  select id, 'QTY1' kind, QTY1 qty from QTY where QTY1>0 union all
+  select id, 'QTY2' kind, QTY2 qty from QTY where QTY2>0 union all
+  select id, 'QTY_TOTAL_MX' kind, QTY_TOTAL_MX qty from QTY where QTY_TOTAL_MX>0 union all
+  select id, 'ROLLS' kind, ROLLS qty from QTY where ROLLS>0 union all
+  select id, 'YDS' kind, YDS qty from QTY where YDS>0 union all
+  select id, 'SKIDS' kind, SKIDS qty from QTY where SKIDS>0 union all
+  select id, 'CTNS' kind, CTNS qty from QTY where CTNS>0 union all
+  select id, 'UNIPAKS' kind, UNIPAKS qty from QTY where UNIPAKS>0 union all
+  select id, 'PLASTIC_CONTAINERS' kind, PLASTIC_CONTAINERS qty from QTY where PLASTIC_CONTAINERS>0 union all
+  select id, 'CARTON_CONTAINERS' kind, CARTON_CONTAINERS qty from QTY where CARTON_CONTAINERS>0 union all
+  select id, 'METAL_CONTAINERS' kind, METAL_CONTAINERS qty from QTY where METAL_CONTAINERS>0 union all
+  select id, 'METAL_BUCKET' kind, METAL_BUCKET qty from QTY where METAL_BUCKET>0 union all
+  select id, 'DRUMS' kind, DRUMS qty from QTY where DRUMS>0 union all
+  select id, 'PIECES' kind, PIECES qty from QTY where PIECES>0 union all
+  select id, 'CRATES' kind, CRATES qty from QTY where CRATES>0 union all
+  select id, 'METAL_BASKET' kind, METAL_BASKET qty from QTY where METAL_BASKET>0 union all
+  select id, 'ROLL' kind, ROLL qty from QTY where ROLL>0 union all
+  select id, 'TOTAL' kind, TOTAL qty from QTY where TOTAL>0 union all
+  select id, 'SKIDS_PLUS' kind, SKIDS_PLUS qty from QTY where SKIDS_PLUS>0 union all
+  select id, 'CTNS_PLUS' kind, CTNS_PLUS qty from QTY where CTNS_PLUS>0 union all
+  select id, 'ROLLS_PLUS' kind, ROLLS_PLUS qty from QTY where ROLLS_PLUS>0
+  )a where id = 61083
+  ```
+  
+  
+  ```sql
+  select TRANSACTION_ID, id, kind, qty from(
+  -- select id, TRANSACTION_ID, 'QTY1' kind, QTY1 qty from QTY where QTY1>0 union all
+  -- select id, TRANSACTION_ID, 'QTY2' kind, QTY2 qty from QTY where QTY2>0 union all
+  select id, TRANSACTION_ID, '-------' kind, '' qty from QTY union all
+  -- select id, TRANSACTION_ID, 'QTY_TOTAL_MX' kind, QTY_TOTAL_MX qty from QTY where QTY_TOTAL_MX>0 union all
+  select id, TRANSACTION_ID, 'ROLLS' kind, ROLLS qty from QTY where ROLLS>0 union all
+  select id, TRANSACTION_ID, 'YDS' kind, YDS qty from QTY where YDS>0 union all
+  select id, TRANSACTION_ID, 'SKIDS' kind, SKIDS qty from QTY where SKIDS>0 union all
+  select id, TRANSACTION_ID, 'CTNS' kind, CTNS qty from QTY where CTNS>0 union all
+  select id, TRANSACTION_ID, 'UNIPAKS' kind, UNIPAKS qty from QTY where UNIPAKS>0 union all
+  select id, TRANSACTION_ID, 'PLASTIC_CONTAINERS' kind, PLASTIC_CONTAINERS qty from QTY where PLASTIC_CONTAINERS>0 union all
+  select id, TRANSACTION_ID, 'CARTON_CONTAINERS' kind, CARTON_CONTAINERS qty from QTY where CARTON_CONTAINERS>0 union all
+  select id, TRANSACTION_ID, 'METAL_CONTAINERS' kind, METAL_CONTAINERS qty from QTY where METAL_CONTAINERS>0 union all
+  select id, TRANSACTION_ID, 'METAL_BUCKET' kind, METAL_BUCKET qty from QTY where METAL_BUCKET>0 union all
+  select id, TRANSACTION_ID, 'DRUMS' kind, DRUMS qty from QTY where DRUMS>0 union all
+  select id, TRANSACTION_ID, 'PIECES' kind, PIECES qty from QTY where PIECES>0 union all
+  select id, TRANSACTION_ID, 'CRATES' kind, CRATES qty from QTY where CRATES>0 union all
+  select id, TRANSACTION_ID, 'METAL_BASKET' kind, METAL_BASKET qty from QTY where METAL_BASKET>0 union all
+  select id, TRANSACTION_ID, 'ROLL' kind, ROLL qty from QTY where ROLL>0 union all
+  -- select id, TRANSACTION_ID, 'TOTAL' kind, TOTAL qty from QTY where TOTAL>0 union all
+  select id, TRANSACTION_ID, 'SKIDS_PLUS' kind, SKIDS_PLUS qty from QTY where SKIDS_PLUS>0 union all
+  select id, TRANSACTION_ID, 'CTNS_PLUS' kind, CTNS_PLUS qty from QTY where CTNS_PLUS>0 union all
+  select id, TRANSACTION_ID, 'ROLLS_PLUS' kind, ROLLS_PLUS qty from QTY where ROLLS_PLUS>0
+  )a where TRANSACTION_ID  in (
+  SELECT 
+      TRANSACTION_TABLE_ID
+  FROM
+      TRANSACTION_TABLE
+  WHERE
+      INTRANSIT_DT > NOW() - INTERVAL 4 DAY
+          AND TRANS_LOCATION <> 'OUT TO USA')
+          order by 1,2
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-20T21:40:36.733Z"
+updatedAt: "2017-06-21T21:33:35.866Z"

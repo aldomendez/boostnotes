@@ -1,0 +1,26 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Banderas para que se vean las transacciones en cada una de las pantallas"
+content: '''
+  # Banderas para que se vean las transacciones en cada una de las pantallas
+  
+  Hay que poner `TRANS_REC.TRANS_REC_COMPLETED` en `0` para que se muestre como no completada en la pantalla de __RECEIVING__
+  
+  Si se tiene el numero de transaccion de la tabla de transaction
+  ```sql
+  select * from TRANS_REC where TRANS_REC_ID in 
+  (select TRANS_REC_ID from TRANSACTION_TABLE where TRANSACTION_TABLE_ID in (7472,7474));
+  ```
+  
+  Si se tiene el numero de transaccion de receiving
+  ```SQL
+  select * from TRANS_REC where TRANS_REC_ID in (7472,7474);
+  ```
+  
+'''
+tags: [
+  "ParaSQL"
+]
+isStarred: false
+createdAt: "2017-06-28T16:43:26.266Z"
+updatedAt: "2017-06-28T16:49:53.667Z"

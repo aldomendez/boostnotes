@@ -1,0 +1,127 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Querys contra la tabla de pix"
+content: '''
+  Querys contra la tabla de pix
+  
+  ```sql
+  SELECT * FROM QTY where date > now() - interval 2 day;
+  
+  select * from PART where PART = 'FRANKDAX45';
+  
+  select * from QTY where part = 'FRANKDAX45';
+  
+  select * from users
+  
+  ```
+  
+  ```sql
+  select * from QTY;
+  
+  select * from TRANSACTION_TABLE where TRANSACTION_TABLE_ID = 8135;
+  
+  select * from TRANS_REC where TRANS_REC_ID = 6270;
+  
+  SELECT * from PART where PART LIKE '%0282A2009G004%';
+  SELECT * from PART where PART LIKE '%0282A2009G004%';
+  SELECT * from QTY where PART LIKE '%0282A2009G004%';
+  SELECT * from QTY where PART LIKE '%0282A2009G004%';
+  SELECT * from QTY where TRANSACTION_ID = 8577;
+  
+  SELECT * FROM db11423.OVERALL_LISTING;
+  
+  select * from QTY where date > now() - interval 2 day;
+  
+  SELECT * from TRANSACTION_TABLE where stock_dt > now() - interval 10 day;
+  select * from TRANSACTION_TABLE where TRANSACTION_TABLE_ID = 8614;
+  select * from TRANSACTION_TABLE where TRANSACTION_TABLE_ID in (
+    SELECT TRANSACTION_TABLE_ID from TRANSACTION_TABLE where stock_dt > now() - interval 20 day
+    );
+  
+  select * from TRANS_REC where TRANS_REC_ID in (SELECT TRANS_REC_ID from TRANSACTION_TABLE where stock_dt > now() - interval 3 day)
+  ```
+  
+  ```sql
+  
+  select * from TRANS_REC where trans_rec_date > now() - interval 1 day;
+  
+  select * from TRANSACTION_TABLE;
+  
+  select * from TRANS_REC;
+  
+  select * from RECEIVING_TIME where TRANS_REC_ID = 6709;
+  
+  select * from TRANSACTION_TABLE where TRANS_READY = 1 and TRANS_IE = 1;
+  
+  SELECT 
+      *
+  FROM
+      TRANSACTION_TABLE
+  WHERE
+      stock_dt BETWEEN NOW() - INTERVAL 5 DAY AND NOW() - INTERVAL 3 DAY;
+  
+  select * from TRANSACTION_LINE_ITEMS;
+  
+  SELECT 
+      *
+  FROM
+      TRANSACTION_TABLE
+  WHERE
+  	TRANSACTION_TABLE_ID = 8822;
+  
+  SELECT 
+      *
+  FROM
+      RECEIVING_TIME
+  ORDER BY PROCESS_TIME_HRS DESC;
+  
+  select * from REC_STOCK_STATUS where TRANSACTION_ID = 8822;
+  
+  select * from TRANSACTION_TABLE where TRANSACTION_TABLE_ID = 8822;
+  
+  select
+  	TRANSACTION_TABLE_ID,
+      STOCK_DT,
+      TRANSFER_DT,
+      TRANSFER_DT_BROKER,
+      IMPEXP_DT,
+      INTRANSIT_DT
+  from TRANSACTION_TABLE where TRANSACTION_TABLE_ID = 8822;
+  
+  select
+  	TRANSACTION_TABLE_ID,
+      TRANS_LOCATION,
+      STOCK_DT,
+      TRANSFER_DT,
+      TRANSFER_DT_BROKER,
+      IMPEXP_DT,
+      INTRANSIT_DT
+  from TRANSACTION_TABLE where STOCK_DT is null;
+  
+  ```
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-23T16:41:26.075Z"
+updatedAt: "2017-06-06T12:32:29.763Z"

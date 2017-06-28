@@ -1,0 +1,92 @@
+type: "MARKDOWN_NOTE"
+folder: "41c9aebeb56b46e1925a"
+title: "Copiar archivos adjuntos a drive"
+content: '''
+  Copiar archivos adjuntos a drive
+  
+  ```js
+  function sendToGoogleDrive() { 
+  //  Asi estaba al inicio de los tiempos (esto es lo que copie de la fuente
+  //  http://ctrlq.org/code/19053-send-to-google-drive
+  
+  
+    var sheet   = SpreadsheetApp.getActiveSheet();
+    
+    var gmailLabels  = sheet.getRange("D4:D4").getValue();  
+    var driveFolder  = "Facturas";  
+    var archiveLabel = "autoSaved";
+  
+    //  Retrieves a label given the label name
+    var moveToLabel =  GmailApp.getUserLabelByName(archiveLabel);
+    
+    if ( ! moveToLabel ) {    
+      moveToLabel = GmailApp.createLabel(archiveLabel);    
+    }
+   
+    var filter = "has:attachment -label:" + archiveLabel //+ " label:" + gmailLabels;
+  //  Search Gmail with the given query
+    var threads = GmailApp.search(filter);  
+   
+   
+    for (var x=0; x<threads.length; x++) {
+      
+      var message = threads[x].getMessages()[0];
+      var month = message.getDate().getMonth()+1;
+      var year = message.getDate().getYear();
+      
+      Logger.log(month );
+      Logger.log(year );
+      
+      
+  //  Gets a collection of all folders in the user's Drive that have the given name
+  //  var folder = DriveApp.getFoldersByName(driveFolder + "/" + year + "/" + month);
+    
+  //  if (folder.hasNext()) {
+  //    folder = folder.next();
+  //  } else {
+  //    folder = DriveApp.createFolder(driveFolder + "/" + year + "/" + month);
+  //  }
+      
+      var folder = getFolderByPath(driveFolder + "/" + year + "/" + month)
+      
+      var desc   = message.getSubject() + " #" + message.getId();
+      var att    = message.getAttachments();
+      
+      for (var z=0; z<att.length; z++) {
+        try {
+          file = folder.createFile(att[z]);
+          file.setDescription(desc);
+        }
+        catch (e) {
+          Logger.log(e.toString());
+        }
+      }
+          
+      threads[x].addLabel(moveToLabel);    
+    }
+    
+  }
+  
+  function getFolderByPath(path) {
+    var parts = path.split("/");
+  
+    if (parts[0] == '') parts.shift(); // Did path start at root, '/'?
+  
+    var folder = DriveApp.getRootFolder();
+    for (var i = 0; i < parts.length; i++) {
+      var result = folder.getFoldersByName(parts[i]);
+      if (result.hasNext()) {
+        folder = result.next();
+      } else {
+  //      return null;
+        folder = folder.createFolder(parts[i]);
+      }
+    }
+    return folder;
+  }
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-27T12:29:41.691Z"
+updatedAt: "2017-05-27T12:30:55.868Z"

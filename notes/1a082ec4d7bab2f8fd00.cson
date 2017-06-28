@@ -1,0 +1,13 @@
+type: "MARKDOWN_NOTE"
+folder: "ed71588a89228ddb536f"
+title: "show tables"
+content: '''
+  show tables
+  ;
+  
+  SHOW CREATE TABLE QTY
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-09T16:33:06.617Z"
+updatedAt: "2017-06-09T16:33:14.324Z"

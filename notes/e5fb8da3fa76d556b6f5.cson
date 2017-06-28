@@ -1,0 +1,13 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Problemas que se tienen que resolver"
+content: '''
+  Problemas que se tienen que resolver
+  
+  * [ ] Arreglar el problema con el scroll de la pantalla de transfer
+  * [ ] Lo interesante es que la aplicacion se tiene que modificar desde ScriptCase, por se tiene que poner el `iframe` con un height="1360px" y width="1360px", a lo mejor 100% funciona, pero en la altura se pierden las barras de scroll.
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-05T20:25:14.486Z"
+updatedAt: "2017-06-28T16:50:56.689Z"

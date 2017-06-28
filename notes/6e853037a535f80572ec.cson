@@ -1,0 +1,58 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Ingresar a ParaSQL con un session ID"
+content: '''
+  # Ingresar a ParaSQL con un session ID
+  
+  
+  
+  A continuacion se detallan los pasos para generar un session ID y como es que se realiza la coneccion con las bases de datos involucradas en el proceso de login para la interaccion con los clientes de NovaLink y como es que estos tienen acceso a sus __Reportes__
+  
+  
+  
+  
+  
+  ```js
+  function autoRunUrlQuery() {
+      var sessionId = getParameterByName('session');
+      var startDate = getParameterByName('startDate');
+      var endDate = getParameterByName('endDate');
+  	console.log({sessionId,startDate,endDate})
+      if (sessionId) {
+         var sessionField = parasql.app.getWidgetById('ID2703');
+         sessionField.getDataValue().setString(sessionId);
+         sessionField.displayDataValue();
+  	   sessionField.fireEvent('change');
+  	};
+      if (startDate) {
+         var startDateField = parasql.app.getWidgetById('ID2724');
+         startDateField.getDataValue().setString(startDate);
+         startDateField.displayDataValue();
+  	   startDateField.fireEvent('change');
+  	};
+      if (endDate) {
+         var endDateField = parasql.app.getWidgetById('ID2725');
+         endDateField.getDataValue().setString(endDate);
+         endDateField.displayDataValue();
+  	   endDateField.fireEvent('change');
+  	};
+  }
+  
+  function getParameterByName(name) {
+      url = window.location.href;
+      name = name.replace(/[\\[\\]]/g, "\\\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\\+/g, " "));
+  	
+  }
+  ```
+'''
+tags: [
+  "ParaSQL"
+]
+isStarred: false
+createdAt: "2017-06-16T15:49:23.875Z"
+updatedAt: "2017-06-28T16:50:34.499Z"

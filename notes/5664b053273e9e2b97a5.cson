@@ -1,0 +1,61 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "SUMMARYOVERALLINVOICE Views"
+content: '''
+  # SUMMARY_OVERALL_INVOICE Views
+  
+  ```sql
+  create or replace view SUMMARY_OVERALL_INVOICE_OLD_WITH_TOTAL as 
+  SELECT 
+      FACTURA,
+      LOCATION,
+      TRUCK,
+      COMPANY_NAME,
+      TRANSACTION_ID,
+      DATE,
+      TRANS_COMMENTS,
+      PACKAGE_BULK,
+      QTY,
+      TOTAL,
+      DIVISION
+  FROM
+      db11423.SUMMARY_OVERALL_INVOICE_OLD
+  UNION ALL (SELECT 
+      '', '', '', '', '', '', '', '', 'SUBTOTAL', SUM(TOTAL), ''
+  FROM
+      SUMMARY_OVERALL_INVOICE_OLD)
+  
+  ;
+  SELECT * FROM db11423.SUMMARY_OVERALL_INVOICE_OLD;
+  ```
+  
+  ```sql
+  create or replace view SUMMARY_OVERALL_INVOICE_WITH_TOTAL as 
+  SELECT 
+      FACTURA,
+      LOCATION,
+      TRUCK,
+      COMPANY_NAME,
+      TRANSACTION_ID,
+      DATE,
+      TYPE_LEVEL1,
+      PACKAGE_BULK,
+      QTY,
+      TOTAL,
+      TRANS_IE
+  FROM
+      db11423.SUMMARY_OVERALL_INVOICE_OLD
+      where transaction_id like '%'
+  UNION ALL (SELECT 
+      '', '', '', '', '', '', '', '', 'SUBTOTAL', SUM(TOTAL), ''
+  FROM
+      SUMMARY_OVERALL_INVOICE_OLD where transaction_id like '%')
+  
+  ;
+  SELECT * FROM db11423.SUMMARY_OVERALL_INVOICE_OLD_WITH_TOTAL;
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-28T14:46:11.981Z"
+updatedAt: "2017-06-28T16:47:35.583Z"

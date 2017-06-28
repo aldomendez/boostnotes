@@ -1,0 +1,77 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Transaction_table After updates"
+content: '''
+  # Transaction_table After updates
+  
+  Version final del query que sera agregado al final del trigger que existe en transaction_table_after_update
+  * [x] Probar que funcione el query propuesto
+  * [x] Probar el trigger para cuando se quita la bandera
+  
+  ```sql
+  IF (OLD.TRANS_MS is null or OLD.TRANS_MS = 0) and NEW.TRANS_MS = 1 THEN 
+      insert into QTY_CHECK ( QTY_CHECK_ID, ID, QTY, QTY_CHECK, LOCATION, U_M)
+      select 
+          db11423.parasql_next_counter_value('QTY_CHECK','QTY_CHECK_ID') QTY_CHECK_ID,
+          ID, 0 qty, 0 QTY_CHECK, 'location' ITEM_LOCATION, b.UM_MX
+      from QTY a, PART b
+      where a.TRANSACTION_ID = NEW.TRANSACTION_TABLE_ID and a.PART = b.PART;
+  END IF;
+  ```
+  
+  ```sql
+  IF OLD.TRANS_MS = 1 and (NEW.TRANS_MS = 0 or NEW.TRANS_MS is null) THEN 
+      delete from QTY_CHECK where ID in 
+      (select ID from QTY a
+      where a.TRANSACTION_ID = NEW.TRANSACTION_TABLE_ID );
+  END IF;
+  ```
+  
+  Estos son los datos que se necesitaron para llegar a este resultado. Hasta ahora no se a probado
+  
+  ```sql
+  select * from QTY
+  ;
+  select * from QTY WHERE TRANSACTION_ID = 9716
+  ;
+  select * from QTY_CHECK
+  ;
+  select * from TRANSACTION_TABLE
+  ;
+  insert into QTY_CHECK (
+  QTY_CHECK_ID,
+  ID,
+  QTY,
+  LOCATION,
+  U_M
+  );
+  select 
+  db11423.parasql_next_counter_value('QTY_CHECK','QTY_CHECK_ID'),
+      ID,
+      0,
+      0,
+      '' location,
+      ''
+  from QTY
+  ;
+  select 
+      -- db11423.parasql_next_counter_value('QTY_CHECK','QTY_CHECK_ID')
+      9999 generated_id,
+      ID,
+      0 qty,
+      b.UM_MX
+  from QTY a, PART b
+  where a.PART = b.PART
+  ;
+  select * from QTY WHERE part like 'EASY%'
+  ;
+  UPDATE QTY SET ITEM_LOCATION = 'INTRANSIT-A' WHERE TRANSACTION_ID = 9716
+  ;
+  select * from QTY WHERE TRANSACTION_ID = 9716
+  ;
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-28T14:48:10.879Z"
+updatedAt: "2017-06-28T16:47:30.229Z"

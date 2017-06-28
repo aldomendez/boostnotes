@@ -1,0 +1,39 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Update iframe"
+content: '''
+  # Update iframe 
+  
+  Esto por que las aplicaciones que estamos haciendo tienen un tamaño no estandad y el contenedor en el que lo estamos mostrando no muestra el scroll que deberia
+  
+  Asi que el las etiquetas `a` estaremos agregando una llamada `onclick="resizeIFrameToFitContent( document.getElementById( 'iframepagecontent' ),1360,1360 )"` quedando la linea completa de la siguiente manera:
+  
+  ```html
+  <li class="list-group-item">
+    <a 
+      onclick="resizeIFrameToFitContent( document.getElementById( 'iframepagecontent' ),1360,1360 )" 
+      href="https://www.parasql.com/public?appId=c33d64c5-0fb8-41e0-9ebb-5be3bbeec288&name=<? echo $this->sc_temp_usr_login;?>"  
+      target="iframe1">
+        <img src="http://novalinkpix.com/scriptcase/devel/conf/sys/img/ico/glyphicons-513-paste.png"/>
+          Stock
+      </a>
+  </li>
+  ```
+  
+  Esto estara llamando a:
+  
+  ```js
+  function resizeIFrameToFitContent( iFrame,width, height ) {
+      width = width || 1360;
+      height = height || 1360;
+      iFrame.width  = width;
+      iFrame.height = height;
+  }
+  ```
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-07T12:27:08.408Z"
+updatedAt: "2017-06-07T12:33:09.811Z"

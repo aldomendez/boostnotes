@@ -1,0 +1,46 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "ParaSQL, cargar una variable desde la direccion web (o iframe)"
+content: '''
+  # ParaSQL, cargar una variable desde la direccion web (o iframe)
+  
+  Se tiene que poner esto en los _app_scripts_:
+  
+  ```js
+  function autoRunUrlQuery() {
+      var custid = getParameterByName('name');
+      if (custid) {
+         var searchField = parasql.app.getWidgetById('ID2696');
+         searchField.getDataValue().setString(custid);
+         searchField.displayDataValue();
+  		searchField.fireEvent('change');
+  	};
+  }
+  
+  function getParameterByName(name) {
+      url = window.location.href;
+      name = name.replace(/[\\[\\]]/g, "\\\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\\+/g, " "));
+  }
+  ```
+  
+  Y se tiene que poner esto como evento `change` de un cuadro de texto:
+  
+  ```js
+  function (event) {
+  	parasql.app.getWidgetById('ID2700').performClick();
+  }
+  ```
+  
+  Y a ese boton se le pueden programas todas las acciones que se deseen para que se ejecuten al inicio.
+  
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-09T17:29:27.498Z"
+updatedAt: "2017-06-09T17:35:30.111Z"

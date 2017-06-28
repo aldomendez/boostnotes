@@ -1,0 +1,59 @@
+type: "MARKDOWN_NOTE"
+folder: "ed71588a89228ddb536f"
+title: "Insertar campos faltantes de un respaldo"
+content: '''
+  # Insertar campos faltantes de un respaldo
+  
+  ```sql
+  
+  insert into QTY (ID,
+  PART,
+  QTY1,
+  QTY2,
+  QTY_TOTAL_MX,
+  DATE,
+  TRUCK,
+  PRICE,
+  WEIGHT_UNIT,
+  ROLLS,
+  YDS,
+  SKIDS,
+  CTNS,
+  UNIPAKS,
+  PLASTIC_CONTAINERS,
+  CARTON_CONTAINERS,
+  METAL_CONTAINERS,
+  METAL_BUCKET,
+  DRUMS,
+  PIECES,
+  CRATES,
+  METAL_BASKET,
+  ROLL,
+  TOTAL,
+  COMMENTS,
+  TRANSACTION_ID,
+  PICK_ITEM,
+  ITEM_LOCATION,
+  REF_ID,
+  REF_TRANSACTION_ID,
+  REF_UM_CONV,
+  STORE_LOCATION,
+  STORE_DT,
+  LOAD_CHECK,
+  DELETE_CHECK,
+  UPDATE_CHECK,
+  ADD_CHECK,
+  SKIDS_PLUS,
+  CTNS_PLUS,
+  ROLLS_PLUS,
+  LOT_NUM)
+  select * from QTY_backup a where a.ID not in (select ID from QTY);
+  
+  
+  select * from QTY_backup a where a.ID not in (select ID from QTY);
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-20T17:28:55.681Z"
+updatedAt: "2017-06-20T17:29:21.240Z"

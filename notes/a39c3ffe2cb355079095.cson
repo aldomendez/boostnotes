@@ -1,0 +1,97 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "autorun de parasql"
+content: '''
+  # autorun de parasql
+  
+  ```js
+  
+  function autoRunUrlQuery() {
+      var custid = getParameterByName('name');
+      if (custid) {
+         var searchField = parasql.app.getWidgetById('ID1034');
+         searchField.getDataValue().setString(custid);
+         searchField.displayDataValue();
+  	     searchField.fireEvent('change');
+  	};
+      
+  }
+  
+  function getParameterByName(name) {
+      
+      url = window.location.href;
+      name = name.replace(/[\\[\\]]/g, "\\\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\\+/g, " "));
+  	
+  }
+  
+  var name;
+  function company() {
+  
+  	var sel = document.getElementById("select1");
+  	
+  	sel.remove(0);
+  	
+  	var reportWidget = parasql.app.getWidgetById('ID1035');
+  var dataTable = reportWidget.getDataTable();
+  var rows = dataTable.getRows();
+  for (var i = 0; i < rows.length ; i++) {
+      var col4Str = rows[i].getValueAt(2).getString();
+  	console.log(col4Str + " - " + i + " - " + rows.length);
+  		
+  	var opt = document.createElement("option");
+  
+  	opt.value=i+1;
+  	opt.text = col4Str
+  	
+  	sel.add(opt, sel.options[i]);
+  }
+  	
+  	sel.removeAttribute("onfocus")
+  	
+  	sel.setAttribute("onchange","myfunction()");
+  	
+  	
+  	reportWidget.setActiveIndex(0);
+  	
+  		
+  	//var vname = parasql.app.getWidgetById('ID2686');
+  
+  	//var vlist = document.getElementById('select1').options[document.getElementById('select1').selectedIndex].text;
+  	
+  //	vname.setDataValue(vlist);
+  	
+  }
+  
+  function myfunction()
+  {
+  	var client = document.getElementById('select1');
+  	
+  	var reportWidget = parasql.app.getWidgetById('ID1035');
+  	
+  	var clientindex = client.selectedIndex;
+  		
+  	reportWidget.setActiveIndex(clientindex);
+  	
+  	//myVar = setTimeout(alertFunc, 4000);
+  		
+  }
+  
+  function alertFunc() {
+  	
+    //alert("Hello!");
+  	
+  var text = parasql.app.getWidgetById('ID1027');
+  
+  text.fireEvent('change');
+  }
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-23T19:35:31.860Z"
+updatedAt: "2017-05-24T20:28:59.273Z"

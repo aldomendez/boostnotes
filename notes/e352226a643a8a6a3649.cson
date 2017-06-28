@@ -1,0 +1,18 @@
+type: "MARKDOWN_NOTE"
+folder: "a5ce985f5c1ddaf6bdf5"
+title: "Adminer"
+content: '''
+  # Adminer
+  
+  https://store.docker.com/images/adminer?tab=description
+  
+  Adminer (formerly phpMinAdmin) is a full-featured database management tool written in PHP. Conversely to phpMyAdmin, it consist of a single file ready to deploy to the target server. Adminer is available for MySQL, PostgreSQL, SQLite, MS SQL, Oracle, Firebird, SimpleDB, Elasticsearch and MongoDB.
+  
+  `$ docker run --link some_database:db -p 8080:8080 adminer`
+  
+  Then you can hit http://localhost:8080 or http://host-ip:8080 in your browser.
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-13T14:12:53.407Z"
+updatedAt: "2017-05-13T14:13:39.831Z"

@@ -1,0 +1,23 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Inyectar CSS en parasql"
+content: '''
+  # Inyectar CSS en parasql
+  
+  function addStyleString(str) {
+      var node = document.createElement('style');
+      node.innerHTML = str;
+      document.body.appendChild(node);
+  }
+  
+  addStyleString('.Record { background: purple !important; }');
+  
+  Lo siguiente seria documentar como es que se llaman los elementos en ParaSQL
+  
+  Y rezar para que no cambien de nombre en el futuro.
+  
+'''
+tags: []
+isStarred: false
+createdAt: "2017-05-30T20:14:25.182Z"
+updatedAt: "2017-05-30T20:15:23.440Z"

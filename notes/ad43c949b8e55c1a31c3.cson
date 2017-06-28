@@ -1,0 +1,115 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "ParaSQL copy and pasete values from one field to another"
+content: '''
+  # ParaSQL copy and pasete values from one field to another
+  
+  ```js
+  function (event) {
+  	var partPrice = parasql.app.getWidgetById('ID4106').getInputElement().value;
+  	var qtyQty = parasql.app.getWidgetById('ID1531').getInputElement().value;
+  	var targetField = parasql.app.getWidgetById('ID2133');
+  	targetField.getDataValue().setNumber(partPrice * qtyQty);
+  	targetField.displayDataValue();
+  	
+  	
+  	var tar = parasql.app.getWidgetById('ID1541');
+  	tar.getDataValue().setString(partPrice);
+  	tar.displayDataValue();
+  }
+  
+  function (event) {
+  	var partPrice = parasql.app.getWidgetById('ID4106').getInputElement().value;
+  	var qtyQty = parasql.app.getWidgetById('ID1531').getInputElement().value;
+  	var targetField = parasql.app.getWidgetById('ID2133');
+  	targetField.getDataValue().setNumber(partPrice * qtyQty);
+  	targetField.displayDataValue();
+  	targetField.updateDataValue();
+  	
+  	
+  	var tar = parasql.app.getWidgetById('ID1541');
+  	tar.getDataValue().setString(partPrice);
+  	tar.displayDataValue();
+  	tar.updateDataValue();
+  }
+  
+  parasql.app.getWidgetById('ID1007').addEventListener('render','function (event) { event.target.getContentDiv().innerHTML = "Inline Hello World"; }');
+  
+  
+  
+  
+  function (event) {
+  	
+  	var oPrice = parasql.app.getWidgetById('ID2769').getInputElement().value;
+  	var oweight= parasql.app.getWidgetById('ID2770').getInputElement().value;
+  	
+  	var targetPriceField = parasql.app.getWidgetById('ID1541');
+  	targetPriceField.getDataValue().setString(oPrice);
+  	targetPriceField.displayDataValue();
+  	
+  	var targetWeightField = parasql.app.getWidgetById('ID1543');
+  	targetWeightField.getDataValue().setString(oweight);
+  	targetWeightField.displayDataValue();
+  	
+  	var partPrice = parasql.app.getWidgetById('ID2769').getInputElement().value;
+  	var qtyQty = parasql.app.getWidgetById('ID1531').getInputElement().value;
+  	var weight=parasql.app.getWidgetById('ID1543').getInputElement().value;
+  	
+  	var targetField = parasql.app.getWidgetById('ID1573');
+  	targetField.getDataValue().setNumber((weight * qtyQty));
+  	targetField.displayDataValue();
+  	
+  	var targetField = parasql.app.getWidgetById('ID2133');
+  	targetField.getDataValue().setNumber((partPrice * qtyQty));
+  	targetField.displayDataValue();
+  }
+  
+  function (event) {
+  	var partPrice = parasql.app.getWidgetById('ID4106').getInputElement().value;
+  	var qtyQty = parasql.app.getWidgetById('ID1531').getInputElement().value;
+  	var targetField = parasql.app.getWidgetById('ID2133');
+  	targetField.getDataValue().setNumber(partPrice * qtyQty);
+  	targetField.displayDataValue();
+  	targetField.updateDataValue();
+  	
+  	
+  	var tar = parasql.app.getWidgetById('ID1541');
+  	tar.getDataValue().setString(partPrice);
+  	tar.displayDataValue();
+  	tar.updateDataValue();
+  }
+  
+  
+  
+  
+  function (event) {
+  	
+  	var oPrice = parasql.app.getWidgetById('ID2769').getInputElement().value;
+  	var oweight= parasql.app.getWidgetById('ID2770').getInputElement().value;
+  	
+  	var targetPriceField = parasql.app.getWidgetById('ID1541');
+  	targetPriceField.getDataValue().setString(oPrice);
+  	targetPriceField.displayDataValue();
+  	
+  	var targetWeightField = parasql.app.getWidgetById('ID1543');
+  	targetWeightField.getDataValue().setString(oweight);
+  	targetWeightField.displayDataValue();
+  	
+  	var partPrice = parasql.app.getWidgetById('ID2769').getInputElement().value;
+  	var qtyQty = parasql.app.getWidgetById('ID1531').getInputElement().value;
+  	var weight=parasql.app.getWidgetById('ID1543').getInputElement().value;
+  	
+  	var targetField = parasql.app.getWidgetById('ID1573');
+  	targetField.getDataValue().setNumber((weight * qtyQty));
+  	targetField.displayDataValue();
+  	
+  	var targetField = parasql.app.getWidgetById('ID2133');
+  	targetField.getDataValue().setNumber((partPrice * qtyQty));
+  	targetField.displayDataValue();
+  }
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-02T19:19:22.979Z"
+updatedAt: "2017-06-02T19:20:18.307Z"

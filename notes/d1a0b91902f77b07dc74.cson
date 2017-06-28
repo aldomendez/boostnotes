@@ -1,0 +1,50 @@
+type: "SNIPPET_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Summary_overall"
+description: "Summary_overall"
+snippets: [
+  {
+    name: ""
+    mode: "SQL"
+    content: '''
+      CREATE 
+          ALGORITHM = UNDEFINED 
+          DEFINER = `root`@`%` 
+          SQL SECURITY DEFINER
+      VIEW `SUMMARY_OVERALL` AS
+          SELECT 
+              `CALC_OVERALL`.`FACTURA` AS `FACTURA`,
+              `CALC_OVERALL`.`TRUCK` AS `TRUCK`,
+              `CALC_OVERALL`.`COMPANY_NAME` AS `COMPANY_NAME`,
+              `CALC_OVERALL`.`TRANSACTION_ID` AS `TRANSACTION_ID`,
+              IF(ISNULL(`CALC_OVERALL`.`TYPE_LEVEL1`),
+                  'UNKNOWN',
+                  `CALC_OVERALL`.`TYPE_LEVEL1`) AS `PACKAGE_BULK`,
+              IF((`CALC_OVERALL`.`AMOUNT` > 0),
+                  SUM(`CALC_OVERALL`.`AMOUNT`),
+                  IF(ISNULL(`CALC_OVERALL`.`TYPE_LEVEL1`),
+                      COUNT(`CALC_OVERALL`.`ID`),
+                      COUNT(DISTINCT `CALC_OVERALL`.`PKG_TYPE`))) AS `QTY`
+          FROM
+              `CALC_OVERALL`
+          WHERE
+              (`CALC_OVERALL`.`TRANSACTION_ID` LIKE '%')
+          GROUP BY `CALC_OVERALL`.`FACTURA` , `CALC_OVERALL`.`TRUCK` , `CALC_OVERALL`.`COMPANY_NAME` , `CALC_OVERALL`.`TRANSACTION_ID` , `CALC_OVERALL`.`TYPE_LEVEL1`
+          ORDER BY `CALC_OVERALL`.`FACTURA` , `CALC_OVERALL`.`TRUCK` , `CALC_OVERALL`.`COMPANY_NAME` , `CALC_OVERALL`.`TRANSACTION_ID` , (CASE `CALC_OVERALL`.`TYPE_LEVEL1`
+              WHEN 'SKIDS' THEN 1
+              WHEN 'CTNS' THEN 2
+              WHEN 'ROLLS' THEN 3
+              WHEN 'PLASTIC_CONT' THEN 4
+              WHEN 'METAL_CONT' THEN 5
+              WHEN 'DRUMS' THEN 6
+              WHEN 'LOOSE PIECES' THEN 7
+              WHEN NULL THEN 9
+              ELSE 9
+          END)
+    '''
+  }
+]
+tags: []
+isStarred: false
+createdAt: "2017-05-30T15:30:45.071Z"
+updatedAt: "2017-05-30T15:31:05.078Z"

@@ -1,0 +1,68 @@
+type: "MARKDOWN_NOTE"
+folder: "275a48f31d42892e18a4"
+title: "Cancelar un evento"
+content: '''
+  # Cancelar un evento
+  
+  ```js
+  function (event) {
+  	var location = parasql.app.getWidgetById('ID1105').input.value
+  	var transIE  = parasql.app.getWidgetById('ID1113').input.checked
+  	console.log(location)
+  	console.log(transIE)
+  	if (transIE == true && (location=="INTRANSIT-A" || location == "INTRANSIT-B")){
+  	  event.target.actions = [{"js_constructor":"parasql.widget.util.TargetAction","targetWidgetId":"ID1095","actionMethodName":"parasql.widget.RecordWidget.prototype.saveRecords","actionMethodParameter":""},{"js_constructor":"parasql.widget.util.TargetAction","targetWidgetId":"ID1090","actionMethodName":"parasql.widget.DataWidget.prototype.refreshQuery","actionMethodParameter":""},{"js_constructor":"parasql.widget.util.TargetAction","targetWidgetId":"ID1129","actionMethodName":"parasql.widget.DataWidget.prototype.refreshQuery","actionMethodParameter":""}]
+  	} else if (transIE == true) {
+  		event.target.actions = []
+  		new parasql.ui.MessagePanel('TRANS IE Required','When TRANS LOCATION is set to INTRANSIT-X,','').show();
+  	}
+  
+  }
+  ```
+  
+  The former does not work because it was handling the verifications in an akward way. and in this version also, I am preparing to the future. reading and storing the structure in the `event action` object, and saving it in the window object, instead of hard coding the structure in the code
+  
+  ```js
+  function (event) {
+  	var locat = parasql.app.getWidgetById('ID1105').input.value
+  	var transIE  = parasql.app.getWidgetById('ID1113').input.checked
+  	
+  	if (window.saveEventCopy == null){
+  		window.saveEventCopy = event.target.actions
+  	}
+  
+  	if (locat =="INTRANSIT-A" || locat == "INTRANSIT-B"){
+  		if(transIE == true){
+  			event.target.actions = window.saveEventCopy
+  			console.log('to be completed')    
+  		}else{
+  			event.target.actions = []
+  			new parasql.ui.MessagePanel('TRANS IE Required','When TRANS LOCATION is set to INTRANSIT-X,','').show();    
+  		}
+  	}
+  
+  }
+  ```
+  
+  block only a portion of the events 
+  
+  ```js
+    var completed  = parasql.app.getWidgetById('ID2222').input.checked
+    
+    if (window.saveEventCopy == null){
+      window.saveEventCopy = event.target.actions
+    }
+  	console.log(event.target.actions)
+  
+  	if(completed == false){
+  		//event.target.actions = window.saveEventCopy  
+  	}else{
+  		//event.target.actions = []
+  		//new parasql.ui.MessagePanel('Transaction saved','Transaction saved, but is in PENDING state','feel free to continue whatever you are working at').show();    
+  	}
+  ```
+'''
+tags: []
+isStarred: false
+createdAt: "2017-06-05T20:22:16.281Z"
+updatedAt: "2017-06-07T18:12:39.644Z"
